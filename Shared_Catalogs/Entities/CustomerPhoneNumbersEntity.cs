@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shared_Catalogs.Entities
+namespace Shared_Catalogs.Entities;
+
+public class CustomerPhoneNumbersEntity
 {
-    internal class CustomerPhoneNumbersEntity
-    {
-    }
+    [Key]
+    [ForeignKey(nameof(ContactInformationEntity))]
+    public int ContactId { get; set; }
+
+    [Key]
+    public string PhoneNumber { get; set; } = null!;
+
+    //Hämtar en kontaktinformation
+    public virtual ContactInformationEntity ContactInformation { get; set; } = null!;
 }
