@@ -15,11 +15,11 @@ public partial class Product
 
     public int CategoryId { get; set; }
 
-    public int StockQuantity { get; set; }
+    public int StockQuantityId { get; set; }
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual Manufacturer Manufacturer { get; set; } = null!;
+    public virtual Manufacturer ManufactureName { get; set; } = null!;
 
-    public virtual StockQuantity StockQuantityNavigation { get; set; } = null!;
+    public virtual StockQuantity StockQuantity { get; set; } = null!;
 }

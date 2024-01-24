@@ -42,9 +42,9 @@ public partial class ProductsDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Manufact__3214EC07040F18B0");
 
-            entity.HasIndex(e => e.Manufacturer1, "UQ__Manufact__D194335AF2AFDB42").IsUnique();
+            entity.HasIndex(e => e.ManufactureName, "UQ__Manufact__D194335AF2AFDB42").IsUnique();
 
-            entity.Property(e => e.Manufacturer1)
+            entity.Property(e => e.ManufactureName)
                 .HasMaxLength(50)
                 .HasColumnName("Manufacturer");
         });
@@ -65,12 +65,12 @@ public partial class ProductsDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__Catego__6754599E");
 
-            entity.HasOne(d => d.Manufacturer).WithMany(p => p.Products)
+            entity.HasOne(d => d.ManufactureName).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ManufacturerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__Manufa__66603565");
 
-            entity.HasOne(d => d.StockQuantityNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.StockQuantity).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StockQuantity)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__StockQ__68487DD7");

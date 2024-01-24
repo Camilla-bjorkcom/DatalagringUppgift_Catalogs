@@ -6,13 +6,13 @@ DROP TABLE Manufacturers
 CREATE TABLE Manufacturers 
 (
 	Id int not null identity primary key,
-	Manufacturer nvarchar(50) not null unique
+	ManufactureName nvarchar(50) not null unique
 )
 
 CREATE TABLE StockQuantities 
 (
 	Id int not null identity primary key,
-	Quantity bit not null,
+	Quantity int not null,
 )
 
 CREATE TABLE Categories
@@ -23,11 +23,11 @@ CREATE TABLE Categories
 
 CREATE TABLE Products
 (
-	ArticleNumber varchar(30) primary key,
+	ArticleNumber varchar(50) primary key,
 	Title nvarchar(200) not null unique,
 	Description nvarchar(max),
 
 	ManufacturerId int not null references Manufacturers(Id),
 	CategoryId int not null references Categories(Id),
-	StockQuantity int not null references StockQuantities(Id)
+	StockQuantityId int not null references StockQuantities(Id)
 )

@@ -47,6 +47,7 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
     {
         try
         {
+            //söker fram enititen beroende på vad man hämtat, t.ex. mail, id och returnerar den sen.
             var entity = _context.Set<TEntity>().FirstOrDefault(predicate);
             if (entity != null)
             {
@@ -76,6 +77,7 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
 
         return null!;
     }
+
 
     public virtual bool Delete(Expression<Func<TEntity, bool>> predicate)
     {
