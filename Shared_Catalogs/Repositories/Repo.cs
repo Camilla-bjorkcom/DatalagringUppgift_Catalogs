@@ -13,12 +13,12 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
         _context = context;
     }
 
-    public virtual TEntity Create(TEntity entity)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
         try
         {
             _context.Set<TEntity>().Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity;
         }
@@ -28,11 +28,11 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
 
     }
 
-    public virtual IEnumerable<TEntity> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         try
         {
-            var entities = _context.Set<TEntity>().ToList();
+            var entities = await _context.Set<TEntity>().ToListAsync();
             if (entities.Count != 0)
             {
                 return entities;
@@ -43,12 +43,12 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
         return null!;
     }
 
-    public virtual TEntity GetOne(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {
             //söker fram enititen beroende på vad man hämtat, t.ex. mail, id och returnerar den sen.
-            var entity = _context.Set<TEntity>().FirstOrDefault(predicate);
+            var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
             if (entity != null)
             {
                 return entity;
@@ -59,16 +59,16 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
         return null!;
     }
 
-    public virtual TEntity Update(TEntity entity)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
         try
         {
-            var entityToUpdate = _context.Set<TEntity>().Find(entity);
+            var entityToUpdate = await _context.Set<TEntity>().FindAsync(entity);
             if (entityToUpdate != null)
             {
                 entityToUpdate = entity;
                 _context.Set<TEntity>().Update(entityToUpdate);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return entityToUpdate;
             }
@@ -79,16 +79,16 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
     }
 
 
-    public virtual bool Delete(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {
-            var entity = _context.Set<TEntity>().FirstOrDefault(predicate);
+            var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
             if (entity != null)
             {
 
                 _context.Set<TEntity>().Remove(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -98,15 +98,13 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
         return false;
     }
 
-    public virtual bool Exists(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {
-            var result = _context.Set<TEntity>().Any(predicate);
+            var exisiting = await _context.Set<TEntity>().AnyAsync(predicate);
 
-            return result;
-
-
+            return exisiting;
         }
         catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
 

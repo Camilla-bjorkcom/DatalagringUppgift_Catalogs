@@ -12,8 +12,4 @@ public class StockQuantityService(StockQuantityRepository stockQuantityRepositor
     private readonly StockQuantityRepository _stockQuantityRepository = stockQuantityRepository;
     private readonly ProductRepository _productRepository = productRepository;
 
-    public void UpdateQuantity()
-    { 
-
-    }
 }

@@ -1,9 +1,7 @@
 ﻿using Catalog_App.Entities;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Repositories;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
@@ -167,11 +165,3 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
 
 
 }
-
-
-
-
-//We also have a class variable for the database Context and another for the Repository we are going to use
-//.If there were more Repositories, we would have to add variables representing each of them.
-//We then perform a check to see if our Repository already exists.
-//If not, we instantiate it using the Context instance.
