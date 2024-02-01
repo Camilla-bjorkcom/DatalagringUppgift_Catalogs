@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
-using Shared_Catalogs.Entities;
+using Shared_Catalogs.Entities.Customers;
 
 namespace Shared_Catalogs.Contexts;
 

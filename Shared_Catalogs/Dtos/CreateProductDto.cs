@@ -1,6 +1,8 @@
-﻿namespace Shared_Catalogs.Models;
+﻿using Shared_Catalogs.Interfaces;
 
-public class CreateProductDto
+namespace Shared_Catalogs.Models;
+
+public class CreateProductDto : ICreateProductDto
 {
     public string ArticleNumber { get; set; } = null!;
     public string Title { get; set; } = null!;

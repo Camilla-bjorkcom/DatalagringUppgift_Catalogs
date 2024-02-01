@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Catalog_App.Entities;
 using Microsoft.EntityFrameworkCore;
+using Shared_Catalogs.Entities.Products;
 
 namespace Catalog_App.Contexts;
 

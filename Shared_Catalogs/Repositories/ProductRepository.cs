@@ -1,6 +1,6 @@
 ﻿using Catalog_App.Contexts;
-using Catalog_App.Entities;
 using Microsoft.EntityFrameworkCore;
+using Shared_Catalogs.Entities.Products;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -49,9 +49,10 @@ public class ProductRepository(ProductsDbContext context) : Repo<Product, Produc
         return null!;
     }
 
-    public IEnumerable<Product> GetProductsByCategoryId(int categoryId)
-    {
-        return _context.Products.Where(x => x.CategoryId == categoryId).ToList();
-    }
+    //public async Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId)
+    //{
+    //   var result = await _context.Products.Where(x => x.CategoryId == categoryId).ToList();
+    //    return result;
+    //}
 
 }

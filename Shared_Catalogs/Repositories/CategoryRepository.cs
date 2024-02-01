@@ -1,6 +1,6 @@
 ﻿using Catalog_App.Contexts;
-using Catalog_App.Entities;
 using Microsoft.EntityFrameworkCore;
+using Shared_Catalogs.Entities.Products;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
