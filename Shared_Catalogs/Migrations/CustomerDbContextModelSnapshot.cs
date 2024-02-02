@@ -133,9 +133,6 @@ namespace Shared_Catalogs.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<int>("AddressesId")
                         .HasColumnType("int");
 

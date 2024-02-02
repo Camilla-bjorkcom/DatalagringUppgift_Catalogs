@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, StockQuantityRepository stockQuantityRepository, ManufacturerRepository manufacturerRepository)
+public class ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, StockQuantityRepository stockQuantityRepository, ManufacturerRepository manufacturerRepository) : IProductService
 {
     private readonly ProductRepository _productRepository = productRepository;
     private readonly CategoryRepository _categoryRepository = categoryRepository;
@@ -16,7 +16,7 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
     private readonly ManufacturerRepository _manufacturerRepository = manufacturerRepository;
 
 
-   
+
     public async Task<bool> CreateProductAsync(ICreateProductDto product)
     {
         try
@@ -107,7 +107,7 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
         try
         {
             var result = _productRepository.GetAllAsync();
-           
+
             foreach (var item in await result)
             {
                 products.Add(new ProductDto
@@ -118,7 +118,7 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
                     Manufacturer = item.ManufactureName.ManufactureName,
                 });
             }
-            
+
         }
         catch (Exception ex) { Debug.WriteLine("ERROR : " + ex.Message); }
 
@@ -153,16 +153,16 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
         return false;
     }
 
-    public async Task <bool> DeleteProductAsync(IProduct product)
+    public async Task<bool> DeleteProductAsync(IProduct product)
     {
         try
         {
             if (await _productRepository.ExistsAsync(x => x.ArticleNumber == product.ArticleNumber))
             {
-                 await _productRepository.DeleteAsync(x => x.ArticleNumber == product.ArticleNumber);
-                 return true;
+                await _productRepository.DeleteAsync(x => x.ArticleNumber == product.ArticleNumber);
+                return true;
             }
-           
+
         }
         catch (Exception ex) { Debug.WriteLine("ERROR : " + ex.Message); }
 

@@ -10,7 +10,7 @@ public class CustomersEntity : ICustomersEntity
     public Guid Id { get; set; }
 
     [ForeignKey(nameof(AddressesEntity))]
-    public int AddressId { get; set; }
+    public int AddressesId { get; set; }
 
     [ForeignKey(nameof(CustomerTypeEntity))]
     public int CustomerTypeId { get; set; }

@@ -9,11 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mvvm\Views\" />
-    <Folder Include="Mvvm\ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.MVVM" Version="8.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +20,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared_Catalogs\Shared_Catalogs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Mvvm\Views\ContactAddView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

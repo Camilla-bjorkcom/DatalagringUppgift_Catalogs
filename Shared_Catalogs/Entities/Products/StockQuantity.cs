@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared_Catalogs.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;

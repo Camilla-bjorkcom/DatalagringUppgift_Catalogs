@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="Catalog_App.Mvvm.Views.AddCustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Catalog_App.Mvvm.Views"
+            
+             xmlns:viewmodels="clr-namespace:Catalog_App.Mvvm.ViewModels"
+             xmlns:models="clr-namespace:Shared_Catalogs.Models;assembly=Shared_Catalogs"
+             xmlns:services="clr-namespace:Shared_Catalogs.Services;assembly=Shared_Catalogs"
+             d:DataContext="{d:DesignInstance Type=viewmodels:AddCustomerViewModel}"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    
+    
+    
+    
+    <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.Row="0">
+            <Button Content="Gå tillbaka" Command="{Binding NavigateToFrontPage}"  Margin="0,10,0,10"  HorizontalAlignment="left" Padding="5"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+                <Label Content="Lägg till en ny kund" Margin="0,30,0,10" FontSize="15" Foreground="#656588" FontWeight="Bold" HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" >
+                <Label Content="Skriv in förnamn: *" />
+            <TextBox x:Name="Input_FirstName" Padding="2,5" Text="{Binding CustomerModel.FirstName}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" >
+                <Label Content="Skriv in efternamn: *" />
+            <TextBox x:Name="Input_LastName" Padding="2,5" Text="{Binding CustomerModel.LastName}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" >
+                <Label Content="Skriv in gatuadress: *" />
+            <TextBox x:Name="Input_StreetName" Padding="2,5" Text="{Binding CustomerModel.StreetName}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" >
+                <Label Content="Skriv in postnummer: *" />
+            <TextBox x:Name="Input_PostalCode" Padding="2,5" Text="{Binding CustomerModel.PostalCode}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="6" >
+                <Label Content="Skriv in postort: *" />
+            <TextBox x:Name="Input_City" Padding="2,5" Text="{Binding CustomerModel.CityName}" Margin="0,0,0,40"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="7" >
+                <Label Content="Skriv in email: *" />
+            <TextBox x:Name="Input_Email" Padding="2,5" Text="{Binding CustomerModel.Email}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="8" >
+                <Label Content="Skriv in kundtyp: *" />
+            <TextBox x:Name="Input_Kundtyp" Padding="2,5" Text="{Binding CustomerModel.Phone}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="9">
+                <Button x:Name="BtnAdd" Content="Lägg till kund" Padding="0,5" Command="{Binding AddCommand}" Background="#656588" Foreground="White"/>
+            </StackPanel>
+
+        </Grid>
+</UserControl>

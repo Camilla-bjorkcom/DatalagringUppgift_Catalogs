@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.DependencyInjection;
 using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
+using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Interfaces;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Repositories;
@@ -9,7 +11,7 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository)
+public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository) : ICustomerService
 {
     private readonly AddressesRepository _addressesRepository = addressesRepository;
     private readonly CustomerTypeRepository _customerTypeRepository = customerTypeRepository;
@@ -18,72 +20,73 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     private readonly CustomersRepository _customersRepository = customersRepository;
 
 
-    public async Task<CustomerDto> CreateCustomerAsync(CustomerRegistrationDto customerRegistrationDto)
+    public async Task<bool> CreateCustomerAsync(ICustomerRegistrationDto customerRegistrationDto)
     {
         try
         {
-
             if (!await _customersRepository.ExistsAsync(x => x.ContactInformation.Email == customerRegistrationDto.Email))
             {
-                var customerEntity = new CustomersEntity
+
+                var addressEntity = await _addressesRepository.CreateAsync(new AddressesEntity
                 {
-                    Id = Guid.NewGuid(),
-                    //Göra så eller göra som där nere? 
-                    //Addresses = new AddressesEntity
-                    //{
+                    StreetName = customerRegistrationDto.StreetName,
+                    PostalCode = customerRegistrationDto.PostalCode,
+                    City = customerRegistrationDto.City,
+                });
 
-                    //}
-                };
-                customerEntity = await _customersRepository.CreateAsync(customerEntity);
-
-                if (customerEntity != null)
+                var customerTypeEntity = await _customerTypeRepository.GetOneAsync(x => x.CustomerType == customerRegistrationDto.CustomerType);
+                if (customerTypeEntity == null)
                 {
-                    var customerProfileEntity = await _customerProfileRepository.CreateAsync(new CustomerProfilesEntity
-                    {
-                        FirstName = customerRegistrationDto.FirstName,
-                        LastName = customerRegistrationDto.LastName,
-
-                    });
-
-                    var addressEntity = await _addressesRepository.CreateAsync(new AddressesEntity
-                    {
-                        StreetName = customerRegistrationDto.StreetName,
-                        PostalCode = customerRegistrationDto.PostalCode,
-                        City = customerRegistrationDto.City,
-                    });
-
-                    var customerTypeEntity = await _customerTypeRepository.CreateAsync(new CustomerTypeEntity
+                    customerTypeEntity = await _customerTypeRepository.CreateAsync(new CustomerTypeEntity
                     {
                         CustomerType = customerRegistrationDto.CustomerType
                     });
+                }
+                var customerProfileEntity = await _customerProfileRepository.CreateAsync(new CustomerProfilesEntity
+                {
+                    FirstName = customerRegistrationDto.FirstName,
+                    LastName = customerRegistrationDto.LastName,
 
-                    var contactInformationEntity = await _contactInformationRepository.CreateAsync(new ContactInformationEntity
+                });
+
+                var contactInformationEntity = await _contactInformationRepository.CreateAsync(new ContactInformationEntity
+                {
+                    Email = customerRegistrationDto.Email
+                });
+
+                if (contactInformationEntity != null)
+                {
+                    var customerEntity = new CustomersEntity
                     {
-                        Email = customerRegistrationDto.Email
-                    });
+                        Id = Guid.NewGuid(),
+                        AddressesId = addressEntity.Id,
+                        CustomerTypeId = customerTypeEntity.Id
+                    };
 
-                    if (contactInformationEntity != null)
+                    customerEntity = await _customersRepository.CreateAsync(customerEntity);
+
+                    if (customerEntity != null)
                     {
                         var customerDto = new CustomerDto
                         {
                             CustomerId = customerEntity.Id,
                             FirstName = customerProfileEntity.FirstName,
                             LastName = customerProfileEntity.LastName,
-                            CustomerType = customerTypeEntity.CustomerType,
                             Email = contactInformationEntity.Email,
-                        };
-                        return customerDto;
-                    }
+                            CustomerType = customerTypeEntity.CustomerType,
 
+                        };
+
+                    }
+                    return true;
                 }
             }
 
-
-
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        return null!;
+        return false;
     }
+
 
     //GET
 

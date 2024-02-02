@@ -5,7 +5,7 @@ namespace Shared_Catalogs.Interfaces
     public interface ICustomersEntity
     {
         AddressesEntity Addresses { get; set; }
-        int AddressId { get; set; }
+        int AddressesId { get; set; }
         ContactInformationEntity ContactInformation { get; set; }
         CustomerProfilesEntity CustomerProfiles { get; set; }
         CustomerTypeEntity CustomerType { get; set; }
