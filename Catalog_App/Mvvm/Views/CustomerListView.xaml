@@ -24,7 +24,7 @@
             </StackPanel>
 
 
-            <ListView ItemsSource="{Binding ContactList}" Grid.Row="1" x:Name="List_Contacts" Margin="0,45,0,0" HorizontalContentAlignment="Stretch" >
+            <ListView ItemsSource="{Binding CustomerList}" Grid.Row="1" x:Name="List_Contacts" Margin="0,45,0,0" HorizontalContentAlignment="Stretch" >
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:CustomerModel}">
                         <Grid Margin="8,10">
