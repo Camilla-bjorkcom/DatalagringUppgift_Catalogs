@@ -20,6 +20,8 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     private readonly CustomersRepository _customersRepository = customersRepository;
 
 
+    public IUpdateCustomerDto CurrentCustomer { get; set; } = null!;
+
     public async Task<bool> CreateCustomerAsync(ICustomerRegistrationDto customerRegistrationDto)
     {
         try

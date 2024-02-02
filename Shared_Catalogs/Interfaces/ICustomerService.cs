@@ -4,7 +4,8 @@ namespace Shared_Catalogs.Interfaces
 {
     public interface ICustomerService
     {
-        Task<bool> CreateCustomerAsync(CustomerRegistrationDto customerRegistrationDto);
+        public IUpdateCustomerDto CurrentCustomer { get; set; }
+        Task<bool> CreateCustomerAsync(ICustomerRegistrationDto customerRegistrationDto);
         Task<bool> DeleteCustomerAsync(ICustomersEntity customer);
         Task<IEnumerable<ICustomerDto>> GetAllCustomersAsync();
         Task<ICustomerDto> GetCustomerAsync(ICustomersEntity customer);

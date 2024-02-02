@@ -11,65 +11,64 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="Dina kunder" Margin="0,0,0,10" FontSize="20" Foreground="#656588" FontWeight="ExtraBold"/>
-            </StackPanel>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Dina kunder" Margin="0,0,0,10" FontSize="20" Foreground="#656588" FontWeight="ExtraBold"/>
+        </StackPanel>
 
 
-            <ListView ItemsSource="{Binding CustomerList}" Grid.Row="1" x:Name="List_Contacts" Margin="0,45,0,0" HorizontalContentAlignment="Stretch" >
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:CustomerModel}">
-                        <Grid Margin="8,10">
+        <ListView ItemsSource="{Binding CustomerList}" Grid.Row="1" x:Name="List_Contacts" Margin="0,45,0,0" HorizontalContentAlignment="Stretch" >
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:CustomerModel}">
+                    <Grid Margin="8,10">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Grid.Row="0" Margin="0,5" FontWeight="ExtraBold">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} {1}">
-                                            <Binding Path="FirstName" />
-                                            <Binding Path="LastName" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
 
-                            <StackPanel>
-                                <Button Content="Se kundprofil" CommandParameter="{Binding .}" Grid.Column="1" Command="{Binding Path=DataContext.NavigateToDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"  Width="50" Height="20"
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Grid.Row="0" Margin="0,5" FontWeight="ExtraBold">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="FirstName" />
+                                        <Binding Path="LastName" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <Button Content="Se kundprofil" CommandParameter="{Binding .}" Grid.Column="1" Command="{Binding Path=DataContext.NavigateToProfileViewCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"  Width="50" Height="20"
     HorizontalAlignment="Right" VerticalAlignment="Center" Background="PeachPuff"/>
-                            </StackPanel>
+                        </StackPanel>
 
 
-                        </Grid>
+                    </Grid>
 
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackPanel Grid.Row="2">
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="2">
             <Button Content="Lägg till ny kund" Command="{Binding NavigateToAddCustomerCommand}" Margin="0,20,0,0"/>
-            </StackPanel>
+        </StackPanel>
 
-        </Grid>
     </Grid>
 </UserControl>

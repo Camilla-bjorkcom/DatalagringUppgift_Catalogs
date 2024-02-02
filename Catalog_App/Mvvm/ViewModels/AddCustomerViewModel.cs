@@ -12,6 +12,8 @@ public partial class AddCustomerViewModel : ObservableObject
     private readonly IServiceProvider _sp;
     private readonly ICustomerService _customerService;
 
+
+
     public AddCustomerViewModel(IServiceProvider sp, ICustomerService customerService)
     {
         _sp = sp;
@@ -22,10 +24,10 @@ public partial class AddCustomerViewModel : ObservableObject
     /// Navigates to the StartPage view.
     /// </summary>
     [RelayCommand]
-    private void NavigateToFrontPage()
+    private void NavigateToListView()
     {
         var mainViewModel = _sp.GetRequiredService<MainViewModel>();
-        mainViewModel.CurrentViewModel = _sp.GetRequiredService<StartCatalogPageViewModel>();
+        mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerListViewModel>();
     }
 
     /// <summary>

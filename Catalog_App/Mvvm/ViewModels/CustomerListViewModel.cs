@@ -67,10 +67,10 @@ public partial class CustomerListViewModel : ObservableObject
 
 
     [RelayCommand]
-    private void NavigateToDetailsView(CustomersEntity customer)
+    private void NavigateToProfileView(CustomersEntity customer)
     {
         _customerService.GetCustomerAsync(customer);
         var mainViewModel = _sp.GetRequiredService<MainViewModel>();
-        mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerDetailsViewModel>();
+        mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerProfileViewModel>();
     }
 }

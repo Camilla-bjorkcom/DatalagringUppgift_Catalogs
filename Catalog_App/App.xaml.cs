@@ -23,12 +23,19 @@ public partial class App : Application
             services.AddDbContext<CustomerDbContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\IT_kurser\Kurser\Webbutveckling-dotnet\Datalagring\Catalogs\Shared_Catalogs\Data\CustomersCatalog.mdf;Integrated Security=True;Connect Timeout=30"));
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainViewModel>();
+
             services.AddSingleton<StartCatalogPageViewModel>();
             services.AddTransient<StartCatalogPageView>();
+
             services.AddTransient<AddCustomerView>();
             services.AddTransient<AddCustomerViewModel>();
+
             services.AddTransient<CustomerListViewModel>();
             services.AddTransient<CustomerListView>();
+
+            services.AddTransient<UpdateCustomerViewModel>();
+
+            services.AddTransient<CustomerProfileViewModel>();
 
 
         });
