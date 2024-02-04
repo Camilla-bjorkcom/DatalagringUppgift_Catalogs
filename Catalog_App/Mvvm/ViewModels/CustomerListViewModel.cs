@@ -34,6 +34,8 @@ public partial class CustomerListViewModel : ObservableObject
         _sp = sp;
         _customerService = customerService;
 
+        //_customerService.GetAllCustomersAsync().ConfigureAwait(false);
+
         Task.Run(async () =>
         {
             var result = await _customerService.GetAllCustomersAsync();
@@ -44,12 +46,12 @@ public partial class CustomerListViewModel : ObservableObject
                     CustomerList = new ObservableCollection<ICustomerDto>(result);
                 });
             }
-           
-            
+
+
         });
 
 
-       
+
 
         //_customer = _customerService.CurrentContact;
 
@@ -67,9 +69,9 @@ public partial class CustomerListViewModel : ObservableObject
 
 
     [RelayCommand]
-    private void NavigateToProfileView(CustomersEntity customer)
+    private async Task NavigateToProfileView(CustomersEntity customer)
     {
-        _customerService.GetCustomerAsync(customer);
+        await _customerService.GetCustomerAsync(customer);
         var mainViewModel = _sp.GetRequiredService<MainViewModel>();
         mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerProfileViewModel>();
     }

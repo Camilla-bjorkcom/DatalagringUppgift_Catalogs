@@ -10,38 +10,38 @@ public class StockQuantityRepository(ProductsDbContext context) : Repo<StockQuan
 {
     private readonly ProductsDbContext _context = context;
 
-    public override async Task<IEnumerable<StockQuantity>> GetAllAsync()
-    {
-        try
-        {
-            var entities = await _context.StockQuantities
-                .Include(x => x.Products) //Eventuellt mer .ThenInclude??
-                .ToListAsync();
-            if (entities.Count != 0)
-            {
-                return entities;
-            }
-        }
-        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+    //public override async Task<IEnumerable<StockQuantity>> GetAllAsync()
+    //{
+    //    try
+    //    {
+    //        var entities = await _context.StockQuantities
+    //            .Include(x => x.Products) //Eventuellt mer .ThenInclude??
+    //            .ToListAsync();
+    //        if (entities.Count != 0)
+    //        {
+    //            return entities;
+    //        }
+    //    }
+    //    catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
 
-        return null!;
-    }
+    //    return null!;
+    //}
 
-    public override async Task<StockQuantity> GetOneAsync(Expression<Func<StockQuantity, bool>> predicate)
-    {
-        try
-        {
-            var entity = await _context.StockQuantities
-                .Include(x => x.Products) //Eventuellt mer .ThenInclude??
-                .FirstOrDefaultAsync(predicate);
-            if (entity != null)
-            {
-                return entity;
-            }
-        }
-        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+    //public override async Task<StockQuantity> GetOneAsync(Expression<Func<StockQuantity, bool>> predicate)
+    //{
+    //    try
+    //    {
+    //        var entity = await _context.StockQuantities
+    //            .Include(x => x.Products) //Eventuellt mer .ThenInclude??
+    //            .FirstOrDefaultAsync(predicate);
+    //        if (entity != null)
+    //        {
+    //            return entity;
+    //        }
+    //    }
+    //    catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
 
-        return null!;
-    }
+    //    return null!;
+    //}
 
 }

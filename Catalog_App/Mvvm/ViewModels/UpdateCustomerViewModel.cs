@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Shared_Catalogs.Dtos;
+using Shared_Catalogs.Entities.Customers;
 using Shared_Catalogs.Interfaces;
 
 namespace Catalog_App.Mvvm.ViewModels;
@@ -10,6 +11,10 @@ public partial class UpdateCustomerViewModel : ObservableObject
 {
     private readonly IServiceProvider _sp;
     private readonly ICustomerService _customerService;
+
+    [ObservableProperty]
+    private CustomersEntity _selectedCustomer = new CustomersEntity();
+
 
     [ObservableProperty]
     private IUpdateCustomerDto _updateCustomerForm = new UpdateCustomerDto();
@@ -23,10 +28,22 @@ public partial class UpdateCustomerViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Update()
+    private async Task Update()
     {
-        _customerService.UpdateCustomerAsync(UpdateCustomerForm);
+        await _customerService.UpdateCustomerAsync(UpdateCustomerForm);
         var mainViewModel = _sp.GetRequiredService<MainViewModel>();
         mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerListViewModel>();
+    }
+
+    [RelayCommand]
+    private async Task Remove()
+    {
+        if (SelectedCustomer != null)
+        {
+            await _customerService.DeleteCustomerAsync(SelectedCustomer);
+            var mainViewModel = _sp.GetRequiredService<MainViewModel>();
+            mainViewModel.CurrentViewModel = _sp.GetRequiredService<CustomerListViewModel>();
+        }
+       
     }
 }

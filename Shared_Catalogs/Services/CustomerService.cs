@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository) : ICustomerService
+public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository)
 {
     private readonly AddressesRepository _addressesRepository = addressesRepository;
     private readonly CustomerTypeRepository _customerTypeRepository = customerTypeRepository;
@@ -22,36 +22,37 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
     public IUpdateCustomerDto CurrentCustomer { get; set; } = null!;
 
-    public async Task<bool> CreateCustomerAsync(ICustomerRegistrationDto customerRegistrationDto)
+    public bool CreateCustomer(ICustomerRegistrationDto customerRegistrationDto)
     {
         try
         {
-            if (!await _customersRepository.ExistsAsync(x => x.ContactInformation.Email == customerRegistrationDto.Email))
+            var customerEmail =  _contactInformationRepository.GetOne(x => x.Email == customerRegistrationDto.Email);
+            if (customerEmail == null)
             {
 
-                var addressEntity = await _addressesRepository.CreateAsync(new AddressesEntity
+                var addressEntity =  _addressesRepository.Create(new AddressesEntity
                 {
                     StreetName = customerRegistrationDto.StreetName,
                     PostalCode = customerRegistrationDto.PostalCode,
                     City = customerRegistrationDto.City,
                 });
 
-                var customerTypeEntity = await _customerTypeRepository.GetOneAsync(x => x.CustomerType == customerRegistrationDto.CustomerType);
+                var customerTypeEntity =  _customerTypeRepository.GetOne(x => x.CustomerType == customerRegistrationDto.CustomerType);
                 if (customerTypeEntity == null)
                 {
-                    customerTypeEntity = await _customerTypeRepository.CreateAsync(new CustomerTypeEntity
+                    customerTypeEntity = _customerTypeRepository.Create(new CustomerTypeEntity
                     {
                         CustomerType = customerRegistrationDto.CustomerType
                     });
                 }
-                var customerProfileEntity = await _customerProfileRepository.CreateAsync(new CustomerProfilesEntity
+                var customerProfileEntity = _customerProfileRepository.Create(new CustomerProfilesEntity
                 {
                     FirstName = customerRegistrationDto.FirstName,
                     LastName = customerRegistrationDto.LastName,
 
                 });
 
-                var contactInformationEntity = await _contactInformationRepository.CreateAsync(new ContactInformationEntity
+                var contactInformationEntity =  _contactInformationRepository.Create(new ContactInformationEntity
                 {
                     Email = customerRegistrationDto.Email
                 });
@@ -65,7 +66,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                         CustomerTypeId = customerTypeEntity.Id
                     };
 
-                    customerEntity = await _customersRepository.CreateAsync(customerEntity);
+                    customerEntity =  _customersRepository.Create(customerEntity);
 
                     if (customerEntity != null)
                     {
@@ -92,11 +93,11 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
     //GET
 
-    public async Task<ICustomerDto> GetCustomerAsync(ICustomersEntity customer)
+    public async Task<ICustomerDto> GetCustomer(ICustomersEntity customer)
     {
         try
         {
-            var customerEntity = await _customersRepository.GetOneAsync(x => x.Id == customer.Id);
+            var customerEntity = _customersRepository.GetOne(x => x.Id == customer.Id);
 
             if (customerEntity != null)
             {
@@ -117,36 +118,44 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
         return null!;
     }
 
-    public async Task<IEnumerable<ICustomerDto>> GetAllCustomersAsync()
+    public IEnumerable<ICustomerDto> GetAllCustomers()
     {
         var customers = new List<ICustomerDto>();
         try
         {
-            var result = _customersRepository.GetAllAsync();
+            var result =  _customersRepository.GetAll();
 
-            foreach (var customer in await result)
+            if (result != null)
             {
-                customers.Add(new CustomerDto
+                foreach (var customer in result)
                 {
-                    CustomerId = customer.Id,
-                    FirstName = customer.CustomerProfiles.FirstName,
-                    LastName = customer.CustomerProfiles.LastName,
-                    Email = customer.ContactInformation.Email,
-                    CustomerType = customer.CustomerType.CustomerType,
-                });
+                    customers.Add(new CustomerDto
+                    {
+                        CustomerId = customer.Id,
+                        FirstName = customer.CustomerProfiles.FirstName,
+                        LastName = customer.CustomerProfiles.LastName,
+                        Email = customer.ContactInformation.Email,
+                        CustomerType = customer.CustomerType.CustomerType,
+                    });
+
+
+                }
             }
+
+            return customers;
+
 
         }
         catch (Exception ex) { Debug.WriteLine("ERROR : " + ex.Message); }
 
-        return customers;
+        return null!;
     }
 
 
     //UPDATE
-    public async Task<bool> UpdateCustomerAsync(IUpdateCustomerDto updateCustomer)
+    public bool UpdateCustomer(IUpdateCustomerDto updateCustomer)
     {
-        var exisitingCustomer = await _customersRepository.GetOneAsync(x => x.Id == updateCustomer.Id);
+        var exisitingCustomer = _customersRepository.GetOne(x => x.Id == updateCustomer.Id);
 
         try
         {
@@ -190,7 +199,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                     exisitingCustomer.CustomerProfiles.ProfileImg = updateCustomer.ProfileImg;
                 }
 
-                await _customersRepository.UpdateAsync(exisitingCustomer);
+                _customersRepository.Update(exisitingCustomer);
                 return true;
             }
 
@@ -202,13 +211,13 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
 
     //DELETE
-    public async Task<bool> DeleteCustomerAsync(ICustomersEntity customer)
+    public bool DeleteCustomer(ICustomersEntity customer)
     {
         try
         {
-            if (await _customersRepository.ExistsAsync(x => x.Id == customer.Id))
+            if ( _customersRepository.Exists(x => x.Id == customer.Id))
             {
-                await _customersRepository.DeleteAsync(x => x.Id == customer.Id);
+                _customersRepository.Delete(x => x.Id == customer.Id);
                 return true;
             }
 

@@ -7,17 +7,17 @@ using System.Linq.Expressions;
 
 namespace Shared_Catalogs.Services;
 
-public class CategoryService(CategoryRepository categoryRepository) : ICategoryService
+public class CategoryService(CategoryRepository categoryRepository) 
 {
     private readonly CategoryRepository _categoryRepository = categoryRepository;
 
-    public async Task<bool> CreateCategoryAsync(string categoryName)
+    public bool CreateCategory(string categoryName)
     {
         try
         {
-            if (!await _categoryRepository.ExistsAsync(x => x.CategoryName == categoryName))
+            if (! _categoryRepository.Exists(x => x.CategoryName == categoryName))
             {
-                var categoryEntity = await _categoryRepository.CreateAsync(new Category { CategoryName = categoryName });
+                var categoryEntity =  _categoryRepository.Create(new Category { CategoryName = categoryName });
                 if (categoryEntity != null)
                 {
                     return true;
@@ -29,11 +29,11 @@ public class CategoryService(CategoryRepository categoryRepository) : ICategoryS
         return false;
     }
 
-    public async Task<CategoryDto> GetCategoryAsync(Expression<Func<Category, bool>> predicate)
+    public CategoryDto GetCategory(Expression<Func<Category, bool>> predicate)
     {
         try
         {
-            var categoryEntity = await _categoryRepository.GetOneAsync(predicate);
+            var categoryEntity = _categoryRepository.GetOne(predicate);
             if (categoryEntity != null)
             {
                 var categoryDto = new CategoryDto(categoryEntity.Id, categoryEntity.CategoryName);
@@ -46,11 +46,11 @@ public class CategoryService(CategoryRepository categoryRepository) : ICategoryS
         return null!;
     }
 
-    public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
+    public IEnumerable<CategoryDto> GetAllCategories()
     {
         try
         {
-            var categoryEntities = await _categoryRepository.GetAllAsync();
+            var categoryEntities = _categoryRepository.GetAll();
             if (categoryEntities != null)
             {
                 var list = new List<CategoryDto>();
@@ -66,14 +66,14 @@ public class CategoryService(CategoryRepository categoryRepository) : ICategoryS
     }
 
 
-    public async Task<CategoryDto> UpdateCategoryAsync(CategoryDto updatedCategory)
+    public CategoryDto UpdateCategory(CategoryDto updatedCategory)
     {
         try
         {
-            var categoryEntity = await _categoryRepository.GetOneAsync(x => x.Id == updatedCategory.Id);
+            var categoryEntity = _categoryRepository.GetOne(x => x.Id == updatedCategory.Id);
             if (categoryEntity != null)
             {
-                var updatedCategoryEntity = await _categoryRepository.UpdateAsync(categoryEntity);
+                var updatedCategoryEntity = _categoryRepository.Update(categoryEntity);
                 if (updatedCategoryEntity != null)
                 {
 
@@ -87,11 +87,11 @@ public class CategoryService(CategoryRepository categoryRepository) : ICategoryS
         return null!;
     }
 
-    public async Task<bool> DeleteCategoryAsync(Category category)
+    public bool DeleteCategory(Category category)
     {
         try
         {
-            var result = await _categoryRepository.DeleteAsync(x => x.CategoryName == category.CategoryName);
+            var result =  _categoryRepository.Delete(x => x.CategoryName == category.CategoryName);
             return result;
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); }

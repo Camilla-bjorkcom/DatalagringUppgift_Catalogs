@@ -7,8 +7,6 @@ namespace Catalog_App.Mvvm.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
 
-    //[ObservableProperty]
-    //private ObservableCollection<Contact> _contactList = [];
 
     [ObservableProperty]
     private ObservableObject _currentViewModel;

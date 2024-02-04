@@ -22,5 +22,10 @@ namespace Catalog_App
             InitializeComponent();
             DataContext = viewModel;
         }
+
+        public MainWindow()
+        {
+            
+        }
     }
 }

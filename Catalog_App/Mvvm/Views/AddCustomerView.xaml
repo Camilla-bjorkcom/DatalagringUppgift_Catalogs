@@ -33,7 +33,7 @@
 
 
         <StackPanel Grid.Row="0">
-            <Button Content="Gå tillbaka" Command="{Binding NavigateToListView}"  Margin="0,10,0,10"  HorizontalAlignment="left" Padding="5"/>
+            <Button Content="Gå tillbaka" Command="{Binding NavigateToListViewCommand}"  Margin="0,10,0,10"  HorizontalAlignment="left" Padding="5"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1">
@@ -62,7 +62,7 @@
 
             <StackPanel Grid.Row="6" >
                 <Label Content="Skriv in postort: *" />
-            <TextBox x:Name="Input_City" Padding="2,5" Text="{Binding CustomerModel.CityName}" Margin="0,0,0,40"/>
+            <TextBox x:Name="Input_City" Padding="2,5" Text="{Binding CustomerModel.City}" Margin="0,0,0,40"/>
             </StackPanel>
 
             <StackPanel Grid.Row="7" >
@@ -72,7 +72,7 @@
 
             <StackPanel Grid.Row="8" >
                 <Label Content="Skriv in kundtyp: *" />
-            <TextBox x:Name="Input_Kundtyp" Padding="2,5" Text="{Binding CustomerModel.Phone}" Margin="0,0,0,10"/>
+            <TextBox x:Name="Input_CustomerType" Padding="2,5" Text="{Binding CustomerModel.CustomerType}" Margin="0,0,0,10"/>
             </StackPanel>
 
             <StackPanel Grid.Row="9">

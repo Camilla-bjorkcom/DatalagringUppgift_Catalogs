@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, StockQuantityRepository stockQuantityRepository, ManufacturerRepository manufacturerRepository) : IProductService
+public class ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, StockQuantityRepository stockQuantityRepository, ManufacturerRepository manufacturerRepository)
 {
     private readonly ProductRepository _productRepository = productRepository;
     private readonly CategoryRepository _categoryRepository = categoryRepository;
@@ -17,25 +17,25 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
 
 
 
-    public async Task<bool> CreateProductAsync(ICreateProductDto product)
+    public bool CreateProductAsync(ICreateProductDto product)
     {
         try
         {
-            if (!await _productRepository.ExistsAsync(x => x.Title == product.Title))
+            if ( _productRepository.Exists(x => x.Title == product.Title))
             {
-                var categoryEntity = await _categoryRepository.GetOneAsync(x => x.CategoryName == product.Category);
+                var categoryEntity =  _categoryRepository.GetOne(x => x.CategoryName == product.Category);
                 if (categoryEntity == null)
                 {
-                    categoryEntity = await _categoryRepository.CreateAsync(new Category { CategoryName = product.Category });
+                    categoryEntity = _categoryRepository.Create(new Category { CategoryName = product.Category });
                 }
 
-                var manufacturerEntity = await _manufacturerRepository.GetOneAsync(x => x.ManufactureName == product.Manufacturer);
+                var manufacturerEntity =  _manufacturerRepository.GetOne(x => x.ManufactureName == product.Manufacturer);
                 if (manufacturerEntity == null)
                 {
-                    manufacturerEntity = await _manufacturerRepository.CreateAsync(new Manufacturer { ManufactureName = product.Manufacturer });
+                    manufacturerEntity =  _manufacturerRepository.Create(new Manufacturer { ManufactureName = product.Manufacturer });
                 }
 
-                var stockQuantityEntity = await _stockQuantityRepository.CreateAsync(new StockQuantity { Quantity = product.Quantity });
+                var stockQuantityEntity = _stockQuantityRepository.Create(new StockQuantity { Quantity = product.Quantity });
 
                 var productEntity = new Product()
                 {
@@ -47,7 +47,7 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
                     StockQuantityId = stockQuantityEntity.Id,
                 };
 
-                var entity = await _productRepository.CreateAsync(productEntity);
+                var entity =  _productRepository.Create(productEntity);
                 if (entity != null)
                 {
                     return true;
@@ -59,11 +59,11 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
     }
 
 
-    public async Task<IProductDto> GetProductByTitleAsync(string title)
+    public IProductDto GetProductByTitle(string title)
     {
         try
         {
-            var productEntity = await _productRepository.GetOneAsync(x => x.Title == title);
+            var productEntity = _productRepository.GetOne(x => x.Title == title);
             if (productEntity != null)
             {
                 var productDto = new ProductDto()
@@ -81,15 +81,15 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
     }
 
     //EJ KLAR MED DENNA?
-    public async Task<IEnumerable<IProductDto>> GetProductsByCategoryNameAsync(string categoryName)
+    public IEnumerable<IProductDto> GetProductsByCategoryName(string categoryName)
     {
         try
         {
-            var categoryEntity = await _categoryRepository.GetOneAsync(x => x.CategoryName == categoryName);
+            var categoryEntity = _categoryRepository.GetOne(x => x.CategoryName == categoryName);
 
             if (categoryEntity != null)
             {
-                var result = await _productRepository.GetOneAsync(x => x.CategoryId == categoryEntity.Id);
+                var result = _productRepository.GetOne(x => x.CategoryId == categoryEntity.Id);
                 return (IEnumerable<IProductDto>)result;
 
             }
@@ -101,14 +101,14 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
         return null!;
     }
 
-    public async Task<IEnumerable<IProductDto>> GetAllProductsAsync()
+    public IEnumerable<IProductDto> GetAllProducts()
     {
         var products = new List<IProductDto>();
         try
         {
-            var result = _productRepository.GetAllAsync();
+            var result = _productRepository.GetAll();
 
-            foreach (var item in await result)
+            foreach (var item in result)
             {
                 products.Add(new ProductDto
                 {
@@ -125,9 +125,9 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
         return products;
     }
 
-    public async Task<bool> UpdateProductAsync(IUpdateProductDto productToBeUpdated)
+    public bool UpdateProduct(IUpdateProductDto productToBeUpdated)
     {
-        var existingProduct = await _productRepository.GetOneAsync(x => x.ArticleNumber == productToBeUpdated.ArticleNumber);
+        var existingProduct = _productRepository.GetOne(x => x.ArticleNumber == productToBeUpdated.ArticleNumber);
 
         try
         {
@@ -144,7 +144,7 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
                 //existingProduct.CategoryId = _categoryRepository.GetCategoryIdByName(productToBeUpdated.Category);
                 //existingProduct.StockQuantityId = _stockQuantityRepository.GetStockQuantityIdByQuantity(productToBeUpdated.Quantity);
 
-                await _productRepository.UpdateAsync(existingProduct);
+                _productRepository.Update(existingProduct);
                 return true;
             }
         }
@@ -153,13 +153,13 @@ public class ProductService(ProductRepository productRepository, CategoryReposit
         return false;
     }
 
-    public async Task<bool> DeleteProductAsync(IProduct product)
+    public bool DeleteProduct(IProduct product)
     {
         try
         {
-            if (await _productRepository.ExistsAsync(x => x.ArticleNumber == product.ArticleNumber))
+            if (_productRepository.Exists(x => x.ArticleNumber == product.ArticleNumber))
             {
-                await _productRepository.DeleteAsync(x => x.ArticleNumber == product.ArticleNumber);
+                _productRepository.Delete(x => x.ArticleNumber == product.ArticleNumber);
                 return true;
             }
 

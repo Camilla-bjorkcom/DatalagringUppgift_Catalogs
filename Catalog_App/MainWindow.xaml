@@ -7,8 +7,9 @@
         
         xmlns:views="clr-namespace:Catalog_App.Mvvm.Views"
         xmlns:viewmodels="clr-namespace:Catalog_App.Mvvm.ViewModels"
-     
         xmlns:services="clr-namespace:Shared_Catalogs.Services;assembly=Shared_Catalogs"
+        xmlns:models="clr-namespace:Shared_Catalogs.Models;assembly=Shared_Catalogs"
+    
    
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         
@@ -21,24 +22,20 @@
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
 
-                <DataTemplate DataType="{x:Type viewmodels:MainViewModel}">
-                    <views: StartCatalogPageView />
+                <DataTemplate DataType="{x:Type viewmodels:StartCatalogPageViewModel}">
+                    <views:StartCatalogPageView />
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type viewmodels:ContactAddListViewModel}">
-                    <views:ContactAddView />
+                <DataTemplate DataType="{x:Type viewmodels:AddCustomerViewModel}">
+                    <views:AddCustomerView />
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type viewmodels:ContactEditListViewModel}">
-                    <views:EditContactView />
+                <DataTemplate DataType="{x:Type viewmodels:UpdateCustomerViewModel}">
+                    <views:UpdateCustomerView />
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type viewmodels:ContactRemoveListViewModel}">
-                    <views:RemoveContactWEmail />
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type viewmodels:ContactDetailsViewModel}">
-                    <views:ContactDetailsView />
+                <DataTemplate DataType="{x:Type viewmodels:CustomerProfileViewModel}">
+                    <views:CustomerProfileView/>
                 </DataTemplate>
 
             </ContentControl.Resources>
