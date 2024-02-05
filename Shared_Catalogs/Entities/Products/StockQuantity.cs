@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class StockQuantity : IStockQuantity
+public partial class StockQuantity 
 {
     public int Id { get; set; }
 

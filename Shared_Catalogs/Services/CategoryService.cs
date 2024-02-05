@@ -11,7 +11,7 @@ public class CategoryService(CategoryRepository categoryRepository)
 {
     private readonly CategoryRepository _categoryRepository = categoryRepository;
 
-    public bool CreateCategory(string categoryName)
+    public Category CreateCategory(string categoryName)
     {
         try
         {
@@ -20,13 +20,13 @@ public class CategoryService(CategoryRepository categoryRepository)
                 var categoryEntity =  _categoryRepository.Create(new Category { CategoryName = categoryName });
                 if (categoryEntity != null)
                 {
-                    return true;
+                    return categoryEntity;
                 }
             }
         }
 
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        return false;
+        return null!;
     }
 
     public CategoryDto GetCategory(Expression<Func<Category, bool>> predicate)

@@ -3,7 +3,7 @@ using Shared_Catalogs.Interfaces;
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomerTypeEntity : ICustomerTypeEntity
+public class CustomerTypeEntity 
 {
     [Key]
     public int Id { get; set; }

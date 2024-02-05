@@ -7,9 +7,6 @@ namespace Catalog_App.Contexts;
 
 public partial class ProductsDbContext : DbContext
 {
-    public ProductsDbContext()
-    {
-    }
 
     public ProductsDbContext(DbContextOptions<ProductsDbContext> options)
         : base(options)
@@ -65,7 +62,7 @@ public partial class ProductsDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__Catego__6754599E");
 
-            entity.HasOne(d => d.ManufactureName).WithMany(p => p.Products)
+            entity.HasOne(d => d.Manufacturer).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ManufacturerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__Manufa__66603565");

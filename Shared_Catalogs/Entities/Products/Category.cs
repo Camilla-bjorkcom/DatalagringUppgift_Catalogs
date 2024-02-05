@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class Category : ICategory
+public partial class Category 
 {
     public int Id { get; set; }
 

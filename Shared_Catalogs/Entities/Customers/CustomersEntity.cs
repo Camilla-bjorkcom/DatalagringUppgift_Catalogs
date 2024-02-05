@@ -4,22 +4,16 @@ using Shared_Catalogs.Interfaces;
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomersEntity : ICustomersEntity
+public class CustomersEntity 
 {
     [Key]
-    public Guid Id { get; set; }
-
-    [ForeignKey(nameof(AddressesEntity))]
+    public int Id { get; set; }
     public int AddressesId { get; set; }
-
-    [ForeignKey(nameof(CustomerTypeEntity))]
+    public AddressesEntity Addresses { get; set; } = null!;
     public int CustomerTypeId { get; set; }
+    public CustomerTypeEntity CustomerType { get; set; } = null!;
 
-    //Hämtar en Address, en Type, en Profile, en ContactInformation
-    public virtual AddressesEntity Addresses { get; set; } = null!;
-    public virtual CustomerTypeEntity CustomerType { get; set; } = null!;
-    public virtual CustomerProfilesEntity CustomerProfiles { get; set; } = null!;
-    public virtual ContactInformationEntity ContactInformation { get; set; } = null!;
-
+    public CustomerProfilesEntity CustomerProfiles { get; set; } = null!;
+    public ContactInformationEntity ContactInformation { get; set; } = null!;
 
 }

@@ -8,6 +8,7 @@ using Shared_Catalogs.Interfaces;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Repositories;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Shared_Catalogs.Services;
 
@@ -22,7 +23,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
     public IUpdateCustomerDto CurrentCustomer { get; set; } = null!;
 
-    public bool CreateCustomer(ICustomerRegistrationDto customerRegistrationDto)
+    public CustomersEntity CreateCustomer(CustomerRegistrationDto customerRegistrationDto)
     {
         try
         {
@@ -45,105 +46,76 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                         CustomerType = customerRegistrationDto.CustomerType
                     });
                 }
-                var customerProfileEntity = _customerProfileRepository.Create(new CustomerProfilesEntity
-                {
-                    FirstName = customerRegistrationDto.FirstName,
-                    LastName = customerRegistrationDto.LastName,
-
-                });
-
-                var contactInformationEntity =  _contactInformationRepository.Create(new ContactInformationEntity
-                {
-                    Email = customerRegistrationDto.Email
-                });
-
-                if (contactInformationEntity != null)
+                if (customerTypeEntity != null)
                 {
                     var customerEntity = new CustomersEntity
                     {
-                        Id = Guid.NewGuid(),
                         AddressesId = addressEntity.Id,
                         CustomerTypeId = customerTypeEntity.Id
                     };
+                    customerEntity = _customersRepository.Create(customerEntity);
 
-                    customerEntity =  _customersRepository.Create(customerEntity);
+                    var customerProfileEntity = _customerProfileRepository.Create(new CustomerProfilesEntity
+                    {      
+                        FirstName = customerRegistrationDto.FirstName,
+                        LastName = customerRegistrationDto.LastName,
+                        CustomerId = customerEntity.Id,
 
-                    if (customerEntity != null)
+                    });
+
+                    var contactInformationEntity = _contactInformationRepository.Create(new ContactInformationEntity
                     {
-                        var customerDto = new CustomerDto
-                        {
-                            CustomerId = customerEntity.Id,
-                            FirstName = customerProfileEntity.FirstName,
-                            LastName = customerProfileEntity.LastName,
-                            Email = contactInformationEntity.Email,
-                            CustomerType = customerTypeEntity.CustomerType,
+                        Email = customerRegistrationDto.Email,
+                        CustomerId = customerEntity.Id,
+                    });
 
-                        };
-
-                    }
-                    return true;
+                   
+                    return customerEntity;
                 }
             }
 
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        return false;
+        return null!; ;
     }
 
 
     //GET
 
-    public async Task<ICustomerDto> GetCustomer(ICustomersEntity customer)
+    public CustomersEntity GetCustomerById(int id)
     {
         try
         {
-            var customerEntity = _customersRepository.GetOne(x => x.Id == customer.Id);
+            var customerEntity = _customersRepository.GetOne(x => x.Id == id);
+            return customerEntity;
+        }
+        catch (Exception ex) { Debug.WriteLine("ERROR: " + ex.Message); }
+        return null!;
 
-            if (customerEntity != null)
-            {
-                var customerDto = new CustomerDto
-                {
-                    CustomerId = customerEntity.Id,
-                    FirstName = customerEntity.CustomerProfiles.FirstName,
-                    LastName = customerEntity.CustomerProfiles.LastName,
-                    Email = customerEntity.ContactInformation.Email,
-                    CustomerType = customerEntity.CustomerType.CustomerType
+    }
 
-                };
-                return customerDto;
-
-            }
+    public CustomersEntity GetCustomerByEmail(string email)
+    {
+        try
+        {
+            var customerEntity = _customersRepository.GetOne(x => x.ContactInformation.Email == email);
+            return customerEntity;
         }
         catch (Exception ex) { Debug.WriteLine("ERROR: " + ex.Message); }
         return null!;
     }
 
-    public IEnumerable<ICustomerDto> GetAllCustomers()
+
+    public IEnumerable<CustomersEntity> GetAllCustomers()
     {
-        var customers = new List<ICustomerDto>();
         try
         {
             var result =  _customersRepository.GetAll();
 
             if (result != null)
             {
-                foreach (var customer in result)
-                {
-                    customers.Add(new CustomerDto
-                    {
-                        CustomerId = customer.Id,
-                        FirstName = customer.CustomerProfiles.FirstName,
-                        LastName = customer.CustomerProfiles.LastName,
-                        Email = customer.ContactInformation.Email,
-                        CustomerType = customer.CustomerType.CustomerType,
-                    });
-
-
-                }
+                return result;
             }
-
-            return customers;
-
 
         }
         catch (Exception ex) { Debug.WriteLine("ERROR : " + ex.Message); }
@@ -153,65 +125,27 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
 
     //UPDATE
-    public bool UpdateCustomer(IUpdateCustomerDto updateCustomer)
+    public CustomersEntity UpdateCustomer(CustomersEntity customerEntity)
     {
-        var exisitingCustomer = _customersRepository.GetOne(x => x.Id == updateCustomer.Id);
+        var exisitingCustomer = _customersRepository.GetOne(x => x.Id == customerEntity.Id);
 
         try
         {
             if (exisitingCustomer != null)
             {
-                exisitingCustomer.CustomerProfiles.FirstName = updateCustomer.FirstName;
-                exisitingCustomer.CustomerProfiles.LastName = updateCustomer.LastName;
-                exisitingCustomer.ContactInformation.Email = updateCustomer.Email;
-                exisitingCustomer.CustomerType.CustomerType = updateCustomer.CustomerType;
-                exisitingCustomer.Addresses.StreetName = updateCustomer.StreetName;
-                exisitingCustomer.Addresses.PostalCode = updateCustomer.PostalCode;
-                exisitingCustomer.Addresses.City = updateCustomer.City;
-                if (updateCustomer.PhoneNumber != null)
-                {
-                    var newPhoneNumber = new CustomerPhoneNumbersEntity
-                    {
-                        PhoneNumber = updateCustomer.PhoneNumber,
-                    };
-                    if (newPhoneNumber != null)
-                    {
-                        exisitingCustomer.ContactInformation.PhoneNumbers.Add(newPhoneNumber);
-                    }
-                }
-                if (updateCustomer.PhoneNumber2 != null)
-                {
-                    var newPhoneNumber2 = new CustomerPhoneNumbersEntity
-                    {
-                        PhoneNumber = updateCustomer.PhoneNumber2,
-                    };
-                    if (newPhoneNumber2 != null)
-                    {
-                        exisitingCustomer.ContactInformation.PhoneNumbers.Add(newPhoneNumber2);
-                    }
-                }
-                if (updateCustomer.LinkedIn != null)
-                {
-                    exisitingCustomer.ContactInformation.LinkedIn = updateCustomer.LinkedIn;
-                }
-                if (updateCustomer.ProfileImg != null)
-                {
-                    exisitingCustomer.CustomerProfiles.ProfileImg = updateCustomer.ProfileImg;
-                }
-
-                _customersRepository.Update(exisitingCustomer);
-                return true;
+                var updatedCustomerEntity = _customersRepository.Update(exisitingCustomer);
+                return updatedCustomerEntity;
             }
 
         }
         catch (Exception ex) { Debug.WriteLine("ERROR: " + ex.Message); }
-        return false!;
+        return null!;
     }
 
 
 
     //DELETE
-    public bool DeleteCustomer(ICustomersEntity customer)
+    public bool DeleteCustomer(CustomersEntity customer)
     {
         try
         {

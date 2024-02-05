@@ -10,45 +10,48 @@ public class CustomersRepository(CustomerDbContext context) : Repo<CustomersEnti
 {
     private readonly CustomerDbContext _context = context;
 
-}    //    public override async Task<IEnumerable<CustomersEntity>> GetAllAsync()
-//    {
-//        try
-//        {
-//            var entities = await _context.Customers
-//                .Include(x => x.Addresses)
-//                .Include(x => x.CustomerType).ThenInclude(x => x.CustomerType)
-//                 .Include(x => x.CustomerProfiles)
-//                  .Include(x => x.ContactInformation)
-//                .ToListAsync();
-//            if (entities.Count != 0)
-//            {
-//                return entities;
-//            }
-//        }
-//        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+    public override IEnumerable<CustomersEntity> GetAll()
+    {
+        try
+        {
+            var entities = _context.Customers
+                .Include(x => x.Addresses)
+                .Include(x => x.CustomerType)
+                 .Include(x => x.CustomerProfiles)
+                  .Include(x => x.ContactInformation)
+                .ToList();
+            
+            if (entities.Count != 0)
+            {
+                return entities;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
 
-//        return null!;
-//    }
+        return null!;
+    }
 
-//    public override async Task<CustomersEntity> GetOneAsync(Expression<Func<CustomersEntity, bool>> predicate)
-//    {
-//        try
-//        {
-//            var entity = await _context.Customers
-//                .Include(x => x.Addresses)
-//                .Include(x => x.CustomerType).ThenInclude(x => x.CustomerType)
-//                 .Include(x => x.CustomerProfiles)
-//                  .Include(x => x.ContactInformation)
-//                .FirstOrDefaultAsync(predicate);
-//            if (entity != null)
-//            {
-//                return entity;
-//            }
-//        }
-//        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+    public override CustomersEntity GetOne(Expression<Func<CustomersEntity, bool>> predicate)
+    {
+        try
+        {
+            var entity = _context.Customers
+                .Include(x => x.Addresses)
+                .Include(x => x.CustomerType)
+                 .Include(x => x.CustomerProfiles)
+                  .Include(x => x.ContactInformation)
+                .FirstOrDefault(predicate);
+            if (entity != null)
+            {
+                return entity;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
 
-//        return null!;
-//    }
-//}
+        return null!;
+    }
+}
+
+
 
 

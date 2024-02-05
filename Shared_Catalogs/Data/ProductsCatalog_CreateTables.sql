@@ -23,7 +23,7 @@ CREATE TABLE Categories
 
 CREATE TABLE Products
 (
-	ArticleNumber varchar(50) primary key,
+	ArticleNumber nvarchar(50) primary key,
 	Title nvarchar(200) not null unique,
 	Description nvarchar(max),
 

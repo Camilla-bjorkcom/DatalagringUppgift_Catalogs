@@ -4,14 +4,15 @@ using Shared_Catalogs.Interfaces;
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomerPhoneNumbersEntity : ICustomerPhoneNumbersEntity
+public class CustomerPhoneNumbersEntity
 {
     [Key]
-    [ForeignKey(nameof(ContactInformationEntity))]
-    public int ContactId { get; set; }
+    public int Id { get; set; }
 
     [Key]
     public string PhoneNumber { get; set; } = null!;
+
+    public int ContactId { get; set; }
 
     //Hämtar en kontaktinformation
     public virtual ContactInformationEntity ContactInformation { get; set; } = null!;

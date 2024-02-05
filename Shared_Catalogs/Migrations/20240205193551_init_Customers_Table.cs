@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Shared_Catalogs.Migrations
 {
     /// <inheritdoc />
-    public partial class CustomersCatalog : Migration
+    public partial class init_Customers_Table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +17,7 @@ namespace Shared_Catalogs.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StreetName = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    PostalCode = table.Column<string>(type: "char(6)", nullable: false),
+                    PostalCode = table.Column<string>(type: "char(5)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
@@ -43,7 +42,8 @@ namespace Shared_Catalogs.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AddressesId = table.Column<int>(type: "int", nullable: false),
                     CustomerTypeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -68,13 +68,14 @@ namespace Shared_Catalogs.Migrations
                 name: "ContactInformation",
                 columns: table => new
                 {
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "varchar(100)", nullable: false),
-                    LinkedIn = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactInformation", x => x.CustomerId);
+                    table.PrimaryKey("PK_ContactInformation", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ContactInformation_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -87,14 +88,15 @@ namespace Shared_Catalogs.Migrations
                 name: "CustomerProfiles",
                 columns: table => new
                 {
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    ProfileImg = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerProfiles", x => x.CustomerId);
+                    table.PrimaryKey("PK_CustomerProfiles", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CustomerProfiles_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -107,20 +109,27 @@ namespace Shared_Catalogs.Migrations
                 name: "CustomerPhoneNumbers",
                 columns: table => new
                 {
-                    ContactId = table.Column<int>(type: "int", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ContactInformationCustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ContactId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    ContactInformationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerPhoneNumbers", x => new { x.ContactId, x.PhoneNumber });
                     table.ForeignKey(
-                        name: "FK_CustomerPhoneNumbers_ContactInformation_ContactInformationCustomerId",
-                        column: x => x.ContactInformationCustomerId,
+                        name: "FK_CustomerPhoneNumbers_ContactInformation_ContactInformationId",
+                        column: x => x.ContactInformationId,
                         principalTable: "ContactInformation",
-                        principalColumn: "CustomerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContactInformation_CustomerId",
+                table: "ContactInformation",
+                column: "CustomerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContactInformation_Email",
@@ -129,9 +138,15 @@ namespace Shared_Catalogs.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerPhoneNumbers_ContactInformationCustomerId",
+                name: "IX_CustomerPhoneNumbers_ContactInformationId",
                 table: "CustomerPhoneNumbers",
-                column: "ContactInformationCustomerId");
+                column: "ContactInformationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerProfiles_CustomerId",
+                table: "CustomerProfiles",
+                column: "CustomerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_AddressesId",

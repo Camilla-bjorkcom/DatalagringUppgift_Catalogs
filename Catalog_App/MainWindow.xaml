@@ -4,14 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Catalog_App"
-        
-        xmlns:views="clr-namespace:Catalog_App.Mvvm.Views"
-        xmlns:viewmodels="clr-namespace:Catalog_App.Mvvm.ViewModels"
-        xmlns:services="clr-namespace:Shared_Catalogs.Services;assembly=Shared_Catalogs"
-        xmlns:models="clr-namespace:Shared_Catalogs.Models;assembly=Shared_Catalogs"
     
    
-        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        
         
         
         mc:Ignorable="d"
@@ -19,7 +14,7 @@
     <Grid>
 
 
-        <ContentControl Content="{Binding CurrentViewModel}">
+        <!--<ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
 
                 <DataTemplate DataType="{x:Type viewmodels:StartCatalogPageViewModel}">
@@ -39,7 +34,7 @@
                 </DataTemplate>
 
             </ContentControl.Resources>
-        </ContentControl>
-
+        </ContentControl>-->
+        <!--d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"-->
     </Grid>
 </Window>

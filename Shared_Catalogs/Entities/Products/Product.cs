@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class Product : IProduct
+public partial class Product 
 {
     public string ArticleNumber { get; set; } = null!;
 
@@ -20,7 +20,7 @@ public partial class Product : IProduct
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual Manufacturer ManufactureName { get; set; } = null!;
+    public virtual Manufacturer Manufacturer { get; set; } = null!;
 
     public virtual StockQuantity StockQuantity { get; set; } = null!;
 }

@@ -12,20 +12,20 @@ using System.Windows.Shapes;
 
 namespace Catalog_App
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public MainWindow(MainViewModel viewModel)
-        {
-            InitializeComponent();
-            DataContext = viewModel;
-        }
+//    /// <summary>
+//    /// Interaction logic for MainWindow.xaml
+//    /// </summary>
+//    public partial class MainWindow : Window
+//    {
+//        public MainWindow(MainViewModel viewModel)
+//        {
+//            InitializeComponent();
+//            DataContext = viewModel;
+//        }
 
-        public MainWindow()
-        {
+//        public MainWindow()
+//        {
             
-        }
-    }
+//        }
+//    }
 }

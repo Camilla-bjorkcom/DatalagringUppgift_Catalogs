@@ -4,12 +4,11 @@ using Shared_Catalogs.Interfaces;
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomerProfilesEntity : ICustomerProfilesEntity
+public class CustomerProfilesEntity
 {
 
     [Key]
-    [ForeignKey(nameof(CustomersEntity))]
-    public Guid CustomerId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
@@ -19,9 +18,9 @@ public class CustomerProfilesEntity : ICustomerProfilesEntity
     [Column(TypeName = "nvarchar(50)")]
     public string LastName { get; set; } = null!;
 
-    public string? ProfileImg { get; set; }
+    public int CustomerId { get; set; }
 
     //Hämtar en Customer
-    public virtual CustomersEntity Customer { get; set; } = null!;
+    public CustomersEntity Customer { get; set; } = null!;
 
 }

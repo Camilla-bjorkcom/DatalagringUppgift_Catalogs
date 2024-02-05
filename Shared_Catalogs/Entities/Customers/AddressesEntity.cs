@@ -4,7 +4,7 @@ using Shared_Catalogs.Interfaces;
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class AddressesEntity : IAddressesEntity
+public class AddressesEntity
 {
     [Key]
     public int Id { get; set; }
@@ -14,7 +14,7 @@ public class AddressesEntity : IAddressesEntity
     public string StreetName { get; set; } = null!;
 
     [Required]
-    [Column(TypeName = "char(6)")]
+    [Column(TypeName = "char(5)")]
     public string PostalCode { get; set; } = null!;
 
     [Required]
