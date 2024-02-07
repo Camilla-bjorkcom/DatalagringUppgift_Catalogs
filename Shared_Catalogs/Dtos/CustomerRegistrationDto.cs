@@ -1,9 +1,9 @@
 ﻿using Shared_Catalogs.Entities.Customers;
-using Shared_Catalogs.Interfaces;
+
 
 namespace Shared_Catalogs.Dtos;
 
-public class CustomerRegistrationDto 
+public class CustomerRegistrationDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = null!;

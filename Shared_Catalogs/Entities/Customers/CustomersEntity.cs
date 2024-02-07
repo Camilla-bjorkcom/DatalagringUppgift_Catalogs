@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Shared_Catalogs.Interfaces;
+
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomersEntity 
+public class CustomersEntity
 {
     [Key]
     public int Id { get; set; }

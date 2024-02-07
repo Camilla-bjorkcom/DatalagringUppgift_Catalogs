@@ -1,8 +1,8 @@
-﻿using Shared_Catalogs.Interfaces;
+﻿
 
 namespace Shared_Catalogs.Dtos;
 
-public class UpdateCustomerDto : IUpdateCustomerDto
+public class UpdateCustomerDto 
 {
     public Guid Id { get; } 
     public string FirstName { get; set; } = null!;

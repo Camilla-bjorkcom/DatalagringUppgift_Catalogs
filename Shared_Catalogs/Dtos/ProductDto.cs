@@ -1,8 +1,8 @@
-﻿using Shared_Catalogs.Interfaces;
+﻿
 
 namespace Shared_Catalogs.Models;
 
-public class ProductDto : IProductDto
+public class ProductDto 
 {
     public string Title { get; set; } = null!;
 

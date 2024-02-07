@@ -18,7 +18,7 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
         try
         {
             _context.Set<TEntity>().Add(entity);
-             _context.SaveChanges();
+            _context.SaveChanges();
 
             return entity;
         }
@@ -88,7 +88,7 @@ public abstract class Repo<TEntity, TContext> where TEntity : class where TConte
             {
 
                 _context.Set<TEntity>().Remove(entity);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 return true;
             }

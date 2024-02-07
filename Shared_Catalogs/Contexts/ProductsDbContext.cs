@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Shared_Catalogs.Entities.Products;
 
-namespace Catalog_App.Contexts;
+namespace Shared_Catalogs.Contexts;
 
 public partial class ProductsDbContext : DbContext
 {
+    public ProductsDbContext()
+    {
+    }
 
     public ProductsDbContext(DbContextOptions<ProductsDbContext> options)
         : base(options)
@@ -19,7 +22,7 @@ public partial class ProductsDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<StockQuantity> StockQuantities { get; set; }
+    public virtual DbSet<ProductReview> ProductReviews { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\IT_kurser\\Kurser\\Webbutveckling-dotnet\\Datalagring\\Catalogs\\Shared_Catalogs\\Data\\ProductsCatalog.mdf;Integrated Security=True");
@@ -28,54 +31,52 @@ public partial class ProductsDbContext : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC07E522B699");
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC079A7885A2");
 
-            entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E0F167C0C1").IsUnique();
+            entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E055B2CB58").IsUnique();
 
             entity.Property(e => e.CategoryName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Manufacturer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Manufact__3214EC07040F18B0");
+            entity.HasKey(e => e.Id).HasName("PK__Manufact__3214EC07CACA649A");
 
-            entity.HasIndex(e => e.ManufactureName, "UQ__Manufact__D194335AF2AFDB42").IsUnique();
+            entity.HasIndex(e => e.ManufactureName, "UQ__Manufact__00DD03CE55DAD547").IsUnique();
 
-            entity.Property(e => e.ManufactureName)
-                .HasMaxLength(50)
-                .HasColumnName("Manufacturer");
+            entity.Property(e => e.ManufactureName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ArticleNumber).HasName("PK__Products__3C99114358416759");
+            entity.HasKey(e => e.ArticleNumber).HasName("PK__Products__3C991143A03F9CB1");
 
-            entity.HasIndex(e => e.Title, "UQ__Products__2CB664DC5BAE6EFD").IsUnique();
+            entity.HasIndex(e => e.Title, "UQ__Products__2CB664DC32BA402B").IsUnique();
 
-            entity.Property(e => e.ArticleNumber)
-                .HasMaxLength(30)
-                .IsUnicode(false);
+            entity.Property(e => e.ArticleNumber).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(200);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Products__Catego__6754599E");
+                .HasConstraintName("FK__Products__Catego__3B0BC30C");
 
             entity.HasOne(d => d.Manufacturer).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ManufacturerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Products__Manufa__66603565");
-
-            entity.HasOne(d => d.StockQuantity).WithMany(p => p.Products)
-                .HasForeignKey(d => d.StockQuantity)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Products__StockQ__68487DD7");
+                .HasConstraintName("FK__Products__Manufa__3A179ED3");
         });
 
-        modelBuilder.Entity<StockQuantity>(entity =>
+        modelBuilder.Entity<ProductReview>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__StockQua__3214EC07AC6FD2D8");
+            entity.HasKey(e => e.Id).HasName("PK__ProductR__3214EC078E183EA7");
+
+            entity.Property(e => e.ArticleNumber).HasMaxLength(50);
+
+            entity.HasOne(d => d.ArticleNumberNavigation).WithMany(p => p.ProductReviews)
+                .HasForeignKey(d => d.ArticleNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductRe__Artic__3DE82FB7");
         });
 
         OnModelCreatingPartial(modelBuilder);

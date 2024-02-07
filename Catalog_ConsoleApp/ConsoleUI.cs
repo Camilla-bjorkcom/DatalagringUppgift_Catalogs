@@ -1,15 +1,17 @@
-﻿using Shared_Catalogs.Dtos;
-using Shared_Catalogs.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Shared_Catalogs.Dtos;
+using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Services;
 using System;
 
 namespace Catalog_ConsoleApp;
 
-public class ConsoleUI(CustomerService customerService, ProductService productService)
+public class ConsoleUI(CustomerService customerService, ProductService productService, ProductReviewsService productReviewsService)
 {
     private readonly CustomerService _customerService = customerService;
     private readonly ProductService _productService = productService;
+    private readonly ProductReviewsService _productReviewsService = productReviewsService;
 
     public void CreateCustomer_UI()
     {
@@ -22,7 +24,7 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
         customerRegistrationDto.FirstName = Console.ReadLine()!;
 
         Console.Write("Efternamn: ");
-       customerRegistrationDto.LastName = Console.ReadLine()!;
+        customerRegistrationDto.LastName = Console.ReadLine()!;
 
         Console.Write("E-post: ");
         customerRegistrationDto.Email = Console.ReadLine()!;
@@ -62,13 +64,13 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
             foreach (var customer in customers ?? null!)
             {
                 Console.WriteLine();
-                if (customer.CustomerProfiles != null && customer.ContactInformation != null) 
+                if (customer.CustomerProfiles != null && customer.ContactInformation != null)
                 {
                     Console.WriteLine($"Kund {customer.Id}, {customer.CustomerProfiles.FirstName} {customer.CustomerProfiles.LastName}, {customer.ContactInformation.Email} (Kundtyp: {customer.CustomerType.CustomerType})");
                     Console.WriteLine($"{customer.Addresses.StreetName}, {customer.Addresses.PostalCode} {customer.Addresses.City}");
                 }
                 else Console.WriteLine($"------ Kund {customer.Id} har ingen profil ------");
-                
+
                 Console.WriteLine();
             }
         }
@@ -77,7 +79,7 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
             Console.Clear();
             Console.WriteLine("Det finns inga kunder i databasen. ");
         }
-        
+
     }
 
     public void UpdateCustomer_UI()
@@ -155,14 +157,126 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
         Console.Write("Tillverkare: ");
         createProductDto.Manufacturer = Console.ReadLine()!;
 
-        Console.Write("Kvantitet i lager: ");
-        createProductDto.Quantity = int.Parse(Console.ReadLine()!);
-
         var result = _productService.CreateProduct(createProductDto);
         if (result != null)
         {
             Console.Clear();
             Console.WriteLine("Produkten skapades.");
+            Console.ReadKey();
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Något gick fel.");
+        }
+    }
+
+    public void GetProducts_UI()
+    {
+        Console.Clear();
+        Console.WriteLine("--------HÄMTAR ALLA PRODUKTER--------");
+        var products = _productService.GetAllProducts();
+        if (products != null)
+        {
+            foreach (var product in products ?? null!)
+            {
+                Console.WriteLine();
+                {
+                    Console.WriteLine($"Produkt: {product.Title} ({product.ArticleNumber})");
+                    Console.WriteLine($"Beskrivning: {product.Description}");
+                    Console.WriteLine($"Tillverkare:  {product.Manufacturer.ManufactureName}");
+                    Console.WriteLine($"Kategori: {product.Category.CategoryName}");
+                }
+                Console.WriteLine();
+            }
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Det finns inga produkter i databasen. ");
+        }
+
+    }
+
+    public void UpdateProduct_UI()
+    {
+        Console.Clear();
+        GetProducts_UI();
+        Console.WriteLine("--------UPPDATERA PRODUKT--------");
+        Console.Write("Skriv in produkt titel: ");
+        var title = Console.ReadLine()!;
+
+        var product = _productService.GetProductByTitle(title);
+        if (product != null)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Produkt: {product.Title} ({product.ArticleNumber})");
+            Console.WriteLine($"Beskrivning: {product.Description}");
+            Console.WriteLine($"Tillverkare:  {product.Manufacturer.ManufactureName}");
+            Console.WriteLine($"Kategori: {product.Category.CategoryName}");
+            Console.WriteLine();
+
+
+
+            Console.Write("Uppdatera produkt beskrivning: ");
+            product.Description = Console.ReadLine()!;
+
+            _productService.UpdateProduct(product);
+            Console.WriteLine();
+            Console.WriteLine("UPPDATERAD BESKRIVNING");
+            Console.WriteLine($"Produkt: {product.Title} ({product.ArticleNumber})");
+            Console.WriteLine($"Beskrivning: {product.Description}");
+            Console.WriteLine($"Tillverkare:  {product.Manufacturer.ManufactureName}");
+            Console.WriteLine($"Kategori: {product.Category.CategoryName}");
+            Console.WriteLine();
+        }
+
+        else
+        {
+            Console.WriteLine("Ingen produkt hittades.");
+        }
+        Console.ReadKey();
+    }
+
+    public void DeleteProduct_UI()
+    {
+        Console.Clear();
+        GetProducts_UI();
+        Console.WriteLine("--------RADERA PRODUKT--------");
+        Console.Write("Skriv in produkt titel: ");
+        var title = Console.ReadLine()!;
+
+        var product = _productService.GetProductByTitle(title);
+        if (product != null)
+        {
+           _productService.DeleteProduct(product);
+            Console.WriteLine("Produkten har blivit borttagen");
+        }
+        else
+        {
+            Console.WriteLine("Ingen produkt hittades.");
+        }
+        Console.ReadKey();
+    }
+
+    public void CreateReviews_UI(string productTitle)
+    {
+        var productEntity = _productService.GetProductByTitle(productTitle);
+
+        ProductReviewsDto reviewsDto = new ProductReviewsDto();
+
+        Console.Clear();
+        Console.WriteLine($"--- Skapa Ett Omdöme för {productEntity.Title} ----");
+
+        Console.Write("Omdöme: ");
+        reviewsDto.reviews = Console.ReadLine()!;
+        reviewsDto.ArticleNumber = productEntity.ArticleNumber;
+
+        var result = _productReviewsService.CreateProductReview(reviewsDto);
+        if (result != null)
+        {
+            Console.Clear();
+            Console.WriteLine("Omdömet skapades.");
             Console.ReadKey();
         }
         else

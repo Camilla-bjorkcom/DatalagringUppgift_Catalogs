@@ -1,10 +1,9 @@
-﻿using Shared_Catalogs.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class Category 
+public partial class Category
 {
     public int Id { get; set; }
 

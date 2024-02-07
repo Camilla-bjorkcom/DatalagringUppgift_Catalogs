@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Shared_Catalogs.Interfaces;
+
 
 namespace Shared_Catalogs.Entities.Customers;
 

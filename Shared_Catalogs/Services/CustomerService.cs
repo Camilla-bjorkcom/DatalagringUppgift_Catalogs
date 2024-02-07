@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
 using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
-using Shared_Catalogs.Entities.Products;
-using Shared_Catalogs.Interfaces;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Repositories;
 using System.Diagnostics;
@@ -21,24 +19,24 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     private readonly CustomersRepository _customersRepository = customersRepository;
 
 
-    public IUpdateCustomerDto CurrentCustomer { get; set; } = null!;
+    public UpdateCustomerDto CurrentCustomer { get; set; } = null!;
 
     public CustomersEntity CreateCustomer(CustomerRegistrationDto customerRegistrationDto)
     {
         try
         {
-            var customerEmail =  _contactInformationRepository.GetOne(x => x.Email == customerRegistrationDto.Email);
+            var customerEmail = _contactInformationRepository.GetOne(x => x.Email == customerRegistrationDto.Email);
             if (customerEmail == null)
             {
 
-                var addressEntity =  _addressesRepository.Create(new AddressesEntity
+                var addressEntity = _addressesRepository.Create(new AddressesEntity
                 {
                     StreetName = customerRegistrationDto.StreetName,
                     PostalCode = customerRegistrationDto.PostalCode,
                     City = customerRegistrationDto.City,
                 });
 
-                var customerTypeEntity =  _customerTypeRepository.GetOne(x => x.CustomerType == customerRegistrationDto.CustomerType);
+                var customerTypeEntity = _customerTypeRepository.GetOne(x => x.CustomerType == customerRegistrationDto.CustomerType);
                 if (customerTypeEntity == null)
                 {
                     customerTypeEntity = _customerTypeRepository.Create(new CustomerTypeEntity
@@ -56,7 +54,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                     customerEntity = _customersRepository.Create(customerEntity);
 
                     var customerProfileEntity = _customerProfileRepository.Create(new CustomerProfilesEntity
-                    {      
+                    {
                         FirstName = customerRegistrationDto.FirstName,
                         LastName = customerRegistrationDto.LastName,
                         CustomerId = customerEntity.Id,
@@ -69,7 +67,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                         CustomerId = customerEntity.Id,
                     });
 
-                   
+
                     return customerEntity;
                 }
             }
@@ -110,7 +108,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     {
         try
         {
-            var result =  _customersRepository.GetAll();
+            var result = _customersRepository.GetAll();
 
             if (result != null)
             {
@@ -149,7 +147,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     {
         try
         {
-            if ( _customersRepository.Exists(x => x.Id == customer.Id))
+            if (_customersRepository.Exists(x => x.Id == customer.Id))
             {
                 _customersRepository.Delete(x => x.Id == customer.Id);
                 return true;

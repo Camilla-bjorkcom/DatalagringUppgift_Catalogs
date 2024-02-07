@@ -1,18 +1,12 @@
-﻿DROP TABLE Products
+﻿DROP TABLE ProductReviews
+DROP TABLE Products
 DROP TABLE Categories
-DROP TABLE StockQuantities
 DROP TABLE Manufacturers
 
 CREATE TABLE Manufacturers 
 (
 	Id int not null identity primary key,
 	ManufactureName nvarchar(50) not null unique
-)
-
-CREATE TABLE StockQuantities 
-(
-	Id int not null identity primary key,
-	Quantity int not null,
 )
 
 CREATE TABLE Categories
@@ -23,11 +17,17 @@ CREATE TABLE Categories
 
 CREATE TABLE Products
 (
-	ArticleNumber nvarchar(50) primary key,
-	Title nvarchar(200) not null unique,
-	Description nvarchar(max),
+    ArticleNumber nvarchar(50) primary key,
+    Title nvarchar(200) not null unique,
+    Description nvarchar(max),
+    ManufacturerId int not null references Manufacturers(Id),
+    CategoryId int not null references Categories(Id),
 
-	ManufacturerId int not null references Manufacturers(Id),
-	CategoryId int not null references Categories(Id),
-	StockQuantityId int not null references StockQuantities(Id)
+)
+
+CREATE TABLE ProductReviews
+(
+    Id int not null identity primary key,
+    Reviews nvarchar(max) not null,
+    ArticleNumber nvarchar(50) not null references Products(ArticleNumber)
 )

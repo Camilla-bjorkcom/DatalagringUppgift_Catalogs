@@ -20,7 +20,7 @@ public class CustomersRepository(CustomerDbContext context) : Repo<CustomersEnti
                  .Include(x => x.CustomerProfiles)
                   .Include(x => x.ContactInformation)
                 .ToList();
-            
+
             if (entities.Count != 0)
             {
                 return entities;

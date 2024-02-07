@@ -1,10 +1,9 @@
-﻿using Shared_Catalogs.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class Product 
+public partial class Product
 {
     public string ArticleNumber { get; set; } = null!;
 
@@ -16,11 +15,9 @@ public partial class Product
 
     public int CategoryId { get; set; }
 
-    public int StockQuantityId { get; set; }
-
     public virtual Category Category { get; set; } = null!;
 
     public virtual Manufacturer Manufacturer { get; set; } = null!;
 
-    public virtual StockQuantity StockQuantity { get; set; } = null!;
+    public virtual ICollection<ProductReview> ProductReviews { get; set; } = new List<ProductReview>();
 }

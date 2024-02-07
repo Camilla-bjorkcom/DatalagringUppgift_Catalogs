@@ -1,4 +1,4 @@
-﻿using Shared_Catalogs.Interfaces;
+﻿
 
 namespace Shared_Catalogs.Dtos;
 
@@ -13,7 +13,7 @@ public class CreateProductDto
 
     public string Manufacturer { get; set; } = null!;
 
-    public int Quantity { get; set; }
+    
 
 }
 

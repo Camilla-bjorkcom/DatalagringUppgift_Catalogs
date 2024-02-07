@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Shared_Catalogs.Interfaces;
+
 
 namespace Shared_Catalogs.Entities.Customers;
 
-public class CustomerTypeEntity 
+public class CustomerTypeEntity
 {
     [Key]
     public int Id { get; set; }

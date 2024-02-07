@@ -1,10 +1,9 @@
-﻿using Shared_Catalogs.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Shared_Catalogs.Entities.Products;
 
-public partial class Manufacturer 
+public partial class Manufacturer
 {
     public int Id { get; set; }
 
