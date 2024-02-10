@@ -29,7 +29,7 @@ public class CustomerDbContext : DbContext
            .IsUnique();
 
         modelBuilder.Entity<CustomerPhoneNumbersEntity>()
-           .HasKey(x => new { x.ContactId, x.PhoneNumber });
+           .HasKey(x => new { x.ContactInformationId, x.PhoneNumber });
 
     }
 }

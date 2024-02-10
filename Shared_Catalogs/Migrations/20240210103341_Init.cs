@@ -5,7 +5,7 @@
 namespace Shared_Catalogs.Migrations
 {
     /// <inheritdoc />
-    public partial class init_Customers_Table : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -110,16 +110,15 @@ namespace Shared_Catalogs.Migrations
                 columns: table => new
                 {
                     PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ContactId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    ContactInformationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerPhoneNumbers", x => new { x.ContactId, x.PhoneNumber });
+                    table.PrimaryKey("PK_CustomerPhoneNumbers", x => new { x.ContactInformationId, x.PhoneNumber });
                     table.ForeignKey(
-                        name: "FK_CustomerPhoneNumbers_ContactInformation_ContactId",
-                        column: x => x.ContactId,
-                        principalTable: "ContactId",
+                        name: "FK_CustomerPhoneNumbers_ContactInformation_ContactInformationId",
+                        column: x => x.ContactInformationId,
+                        principalTable: "ContactInformation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

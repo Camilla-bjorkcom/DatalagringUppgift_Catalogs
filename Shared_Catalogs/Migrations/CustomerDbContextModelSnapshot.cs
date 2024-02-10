@@ -74,18 +74,13 @@ namespace Shared_Catalogs.Migrations
 
             modelBuilder.Entity("Shared_Catalogs.Entities.Customers.CustomerPhoneNumbersEntity", b =>
                 {
-                    b.Property<int>("ContactId")
+                    b.Property<int>("ContactInformationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ContactInformationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ContactId", "PhoneNumber");
-
-                    b.HasIndex("ContactInformationId");
+                    b.HasKey("ContactInformationId", "PhoneNumber");
 
                     b.ToTable("CustomerPhoneNumbers");
                 });

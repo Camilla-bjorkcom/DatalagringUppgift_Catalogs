@@ -10,7 +10,8 @@ public class CustomerPhoneNumbersEntity
     public string PhoneNumber { get; set; } = null!;
 
     [Key]
-    public int ContactId { get; set; }
+    [ForeignKey (nameof(ContactInformation))]
+    public int ContactInformationId { get; set; }
 
     //Hämtar en kontaktinformation
     public virtual ContactInformationEntity ContactInformation { get; set; } = null!;

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
 using Shared_Catalogs.Entities.Products;
-using Shared_Catalogs.Models;
 using Shared_Catalogs.Services;
 using System;
 
@@ -129,6 +128,13 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
         {
             Console.WriteLine();
             Console.WriteLine($"Kund {customer.Id}, {customer.Email}");
+            if (customer.PhoneNumbers.Count < 0)
+            {
+                foreach (var customerPhoneNumber in customer.PhoneNumbers)
+                {
+                    Console.WriteLine($"{customerPhoneNumber.PhoneNumber}");
+                }
+            }
             Console.WriteLine();
 
             Console.Write("Skriv in nytt telefonnummer: ");
@@ -306,7 +312,7 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
         Console.WriteLine($"--- Skapa Ett Omdöme för {productEntity.Title} ----");
 
         Console.Write("Omdöme: ");
-        reviewsDto.reviews = Console.ReadLine()!;
+        reviewsDto.Reviews = Console.ReadLine()!;
         reviewsDto.ArticleNumber = productEntity.ArticleNumber;
 
         var result = _productReviewsService.CreateProductReview(reviewsDto);

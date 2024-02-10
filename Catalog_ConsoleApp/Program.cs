@@ -35,35 +35,35 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddTransient<CustomerTypeRepository>();
 
 
-    //services.AddSingleton<ConsoleUI>();
+    services.AddSingleton<ConsoleUI>();
 
 
 }).Build();
 
 
-//var consoleUI = builder.Services.GetRequiredService<ConsoleUI>();
+var consoleUI = builder.Services.GetRequiredService<ConsoleUI>();
 ////CUSTOMERSCATALOG
-////consoleUI.CreateCustomer_UI();
+//consoleUI.CreateCustomer_UI();
 ////consoleUI.GetCustomers_UI();
 ////consoleUI.UpdateCustomer_UI();
 //consoleUI.UpdateCustomerProfileAndContactInformation_UI();
 ////consoleUI.DeleteCustomer_UI();
 
 ////PRODUCTSCATALOG
-////consoleUI.CreateProduct_UI();
+consoleUI.CreateProduct_UI();
 ////consoleUI.GetProducts_UI();
 ////consoleUI.UpdateProduct_UI();
 ////consoleUI.DeleteProduct_UI();
 
 //////*****SKAPA OMDÖME FÖR PRODUKT*****
-////consoleUI.GetProducts_UI();
-////Console.WriteLine("Välj produkt med titel att skriva omdöme för");
-////var productTitle = Console.ReadLine();
-////if (productTitle != null)
-////{
-////    consoleUI.CreateReviews_UI(productTitle!);
+consoleUI.GetProducts_UI();
+Console.WriteLine("Välj produkt med titel att skriva omdöme för");
+var productTitle = Console.ReadLine();
+if (productTitle != null)
+{
+    consoleUI.CreateReviews_UI(productTitle!);
+}
 
-////}
 //////SKAPA OMDÖME SLUT
 
 

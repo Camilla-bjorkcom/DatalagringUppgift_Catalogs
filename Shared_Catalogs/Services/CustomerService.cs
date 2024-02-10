@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
 using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
-using Shared_Catalogs.Models;
 using Shared_Catalogs.Repositories;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -153,11 +152,16 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
             {
                 if (updateCustomerDto.PhoneNumber != null)
                 {
-                    var customerPhoneNumberEntity = _customerPhoneNumbersRepository.Create(new CustomerPhoneNumbersEntity
+
+                    var customerPhoneNumberEntity = _customerPhoneNumbersRepository.GetOne(x=> x.PhoneNumber == updateCustomerDto.PhoneNumber);
+                    if (customerPhoneNumberEntity == null) 
                     {
-                        PhoneNumber = updateCustomerDto.PhoneNumber,
-                        ContactId = exisitingCustomer.Id
-                    });
+                        var createPhoneNumber = _customerPhoneNumbersRepository.Create(new CustomerPhoneNumbersEntity
+                        {
+                            PhoneNumber = updateCustomerDto.PhoneNumber,
+                            ContactInformationId = exisitingCustomer.Id
+                        });
+                    }
                 }
 
                 var updatedCustomerEntity = _contactInformationRepository.Update(exisitingCustomer);

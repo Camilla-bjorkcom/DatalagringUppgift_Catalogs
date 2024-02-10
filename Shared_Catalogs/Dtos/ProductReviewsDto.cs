@@ -10,6 +10,6 @@ namespace Shared_Catalogs.Dtos
     {
         public string ArticleNumber { get; set; } = null!;
 
-        public string reviews { get; set; } = null!;
+        public string Reviews { get; set; } = null!;
     }
 }

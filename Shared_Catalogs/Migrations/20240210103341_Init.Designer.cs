@@ -11,8 +11,8 @@ using Shared_Catalogs.Contexts;
 namespace Shared_Catalogs.Migrations
 {
     [DbContext(typeof(CustomerDbContext))]
-    [Migration("20240210101112_PhoneNumberEntity")]
-    partial class PhoneNumberEntity
+    [Migration("20240210103341_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,18 +77,13 @@ namespace Shared_Catalogs.Migrations
 
             modelBuilder.Entity("Shared_Catalogs.Entities.Customers.CustomerPhoneNumbersEntity", b =>
                 {
-                    b.Property<int>("ContactId")
+                    b.Property<int>("ContactInformationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ContactInformationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ContactId", "PhoneNumber");
-
-                    b.HasIndex("ContactInformationId");
+                    b.HasKey("ContactInformationId", "PhoneNumber");
 
                     b.ToTable("CustomerPhoneNumbers");
                 });

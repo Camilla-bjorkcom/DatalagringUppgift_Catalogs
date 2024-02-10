@@ -16,7 +16,7 @@ public class ProductReviewsService(ProductReviewsRepository productReviewsReposi
             var productReviewEntity = _productReviewsRepository.Create(new ProductReview
             {
                 ArticleNumber = productReviews.ArticleNumber,
-                Reviews = productReviews.reviews,
+                Reviews = productReviews.Reviews,
             });
             if (productReviewEntity != null)
             {
