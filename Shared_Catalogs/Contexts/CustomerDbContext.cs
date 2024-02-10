@@ -4,8 +4,13 @@ using Shared_Catalogs.Entities.Customers;
 
 namespace Shared_Catalogs.Contexts;
 
-public class CustomerDbContext : DbContext
+public class CustomerDbContext: DbContext
 {
+    public CustomerDbContext()
+    {
+        
+    }
+
     public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options)
     {
     }

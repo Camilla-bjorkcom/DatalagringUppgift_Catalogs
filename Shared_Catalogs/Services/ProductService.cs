@@ -7,15 +7,12 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class ProductService(CategoryRepository categoryRepository, ProductRepository productRepository, ProductReviewsRepository productReviewsRepository, ManufacturerRepository manufacturerRepository, ProductReviewsService productReviewsService, CategoryService categoryService)
+public class ProductService(ProductRepository productRepository, ProductReviewsRepository productReviewsRepository, ManufacturerRepository manufacturerRepository, CategoryService categoryService)
 {
 
-
-    private readonly CategoryRepository _categoryRepository = categoryRepository;
     private readonly ProductRepository _productRepository = productRepository;
     private readonly ProductReviewsRepository _productReviewsRepository = productReviewsRepository;
     private readonly ManufacturerRepository _manufacturerRepository = manufacturerRepository;
-    private readonly ProductReviewsService _productReviewsService = productReviewsService;
     private readonly CategoryService _categoryService = categoryService;
 
     public Product CreateProduct(CreateProductDto product)

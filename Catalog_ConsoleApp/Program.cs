@@ -12,7 +12,8 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 {
     services.AddDbContext<CustomerDbContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\IT_kurser\Kurser\Webbutveckling-dotnet\Datalagring\Catalogs\Shared_Catalogs\Data\CustomersCatalog.mdf;Integrated Security=True;Connect Timeout=30"));
     services.AddDbContext<ProductsDbContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\IT_kurser\Kurser\Webbutveckling-dotnet\Datalagring\Catalogs\Shared_Catalogs\Data\ProductsCatalog.mdf;Integrated Security=True"));
-
+    services.AddDbContext<ProductsDbContext>(x => x.UseInMemoryDatabase($"{Guid.NewGuid}"));
+    services.AddDbContext<CustomerDbContext>(x => x.UseInMemoryDatabase($"{Guid.NewGuid}"));
 
     services.AddTransient<ProductService>();
     services.AddTransient<CustomerService>();
@@ -52,17 +53,17 @@ var consoleUI = builder.Services.GetRequiredService<ConsoleUI>();
 ////PRODUCTSCATALOG
 consoleUI.CreateProduct_UI();
 ////consoleUI.GetProducts_UI();
-////consoleUI.UpdateProduct_UI();
+consoleUI.UpdateProduct_UI();
 ////consoleUI.DeleteProduct_UI();
 
-//////*****SKAPA OMDÖME FÖR PRODUKT*****
-consoleUI.GetProducts_UI();
-Console.WriteLine("Välj produkt med titel att skriva omdöme för");
-var productTitle = Console.ReadLine();
-if (productTitle != null)
-{
-    consoleUI.CreateReviews_UI(productTitle!);
-}
+////////*****SKAPA OMDÖME FÖR PRODUKT*****
+//consoleUI.GetProducts_UI();
+//Console.WriteLine("Välj produkt med titel att skriva omdöme för");
+//var productTitle = Console.ReadLine();
+//if (productTitle != null)
+//{
+//    consoleUI.CreateReviews_UI(productTitle!);
+//}
 
 //////SKAPA OMDÖME SLUT
 

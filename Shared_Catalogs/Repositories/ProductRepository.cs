@@ -48,5 +48,24 @@ public class ProductRepository(ProductsDbContext context) : Repo<Product, Produc
 
         return null!;
     }
+
+    public override Product Update(Product entity)
+    {
+        try
+        {
+            var entityToUpdate = _context.Products.Find(entity.ArticleNumber);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate = entity;
+                _context.Products.Update(entityToUpdate);
+                _context.SaveChanges();
+
+                return entityToUpdate;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+
+        return null!;
+    }
 }
 
