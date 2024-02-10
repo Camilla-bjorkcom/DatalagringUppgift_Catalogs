@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared_Catalogs.Contexts;
+using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Repositories;
+using Shared_Catalogs.Services;
 
 namespace Shared_Catalogs.Tests.Repositories;
 
@@ -359,4 +361,67 @@ public class ProductRepository_Tests
         Assert.False(result);
 
     }
+
+
+    [Fact]
+    public void Exists_ShouldReturnOneProduct_ReturnTrue()
+    {
+        // Arrange
+        var productRepository = new ProductRepository(_context);
+        var categoryRepository = new CategoryRepository(_context);
+        var manufacturerRepository = new ManufacturerRepository(_context);
+
+        var categoryEntity = new Category
+        {
+            Id = 1,
+            CategoryName = "Kategorinamn"
+        };
+
+        categoryRepository.Create(categoryEntity);
+
+        var manufacturerEntity = new Manufacturer
+        {
+            Id = 1,
+            ManufactureName = "Tillverkarens namn"
+        };
+
+        manufacturerRepository.Create(manufacturerEntity);
+
+        var productEntity = new Product
+        {
+            ArticleNumber = Guid.NewGuid().ToString(),
+            Title = "Title",
+            Description = "Beskrivning",
+            CategoryId = categoryEntity.Id,
+            ManufacturerId = manufacturerEntity.Id,
+        };
+
+        productRepository.Create(productEntity);
+
+        // Act
+        var result = productRepository.Exists(x=> x.ArticleNumber == productEntity.ArticleNumber);
+
+        // Assert
+        Assert.True(result);
+
+    }
+
+    [Fact]
+    public void Exists_ShouldNotReturnOneProduct_ReturnFalse()
+    {
+        // Arrange
+        var productRepository = new ProductRepository(_context);
+
+
+        // Act
+        bool result = productRepository.Exists(x => x.ArticleNumber == $"{Guid.NewGuid}");
+
+
+        // Assert 
+        Assert.False(result);
+    }
+
+
+
+
 }

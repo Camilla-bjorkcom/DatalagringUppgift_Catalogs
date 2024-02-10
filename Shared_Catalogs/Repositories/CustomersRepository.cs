@@ -50,6 +50,25 @@ public class CustomersRepository(CustomerDbContext context) : Repo<CustomersEnti
 
         return null!;
     }
+
+    public override CustomersEntity Update(CustomersEntity entity)
+    {
+        try
+        {
+            var entityToUpdate = _context.Customers.Find(entity.Id);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate = entity;
+                _context.Customers.Update(entityToUpdate);
+                _context.SaveChanges();
+
+                return entityToUpdate;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+
+        return null!;
+    }
 }
 
 

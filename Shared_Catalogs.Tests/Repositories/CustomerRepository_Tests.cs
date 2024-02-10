@@ -201,7 +201,226 @@ public class CustomerRepository_Tests
         }
 
     }
+
+
+    [Fact]
+    public void GetOne_ShouldNotGetOneCustomer_ReturnNull()
+    {
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+        var customerTypeRepository = new CustomerTypeRepository(_context);
+        var addressRepository = new AddressesRepository(_context);
+
+        var addressEntity = addressRepository.Create(new AddressesEntity
+        {
+            StreetName = "Gatunamn",
+            PostalCode = "77777",
+            City = "Stad",
+        });
+
+        var customerTypeEntity = customerTypeRepository.Create(new CustomerTypeEntity
+        {
+            CustomerType = "kundtyp"
+        });
+
+        if (customerTypeEntity != null && addressEntity != null)
+        {
+            var customerEntity = new CustomersEntity
+            {
+                AddressesId = addressEntity.Id,
+                CustomerTypeId = customerTypeEntity.Id
+            };
+
+            // Act
+            var result = customerRepository.GetOne(x => x.Id == customerEntity.Id);
+
+
+            // Assert
+            Assert.Null(result);
+
+
+        }
+    }
+
+
+    [Fact]
+    public void Update_ShouldUpdateCustomer_ReturnUpdatedCustomer()
+    {
+
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+        var customerTypeRepository = new CustomerTypeRepository(_context);
+        var addressRepository = new AddressesRepository(_context);
+
+        var addressEntity = addressRepository.Create(new AddressesEntity
+        {
+            StreetName = "Gatunamn",
+            PostalCode = "77777",
+            City = "Stad",
+        });
+
+        var customerTypeEntity = customerTypeRepository.Create(new CustomerTypeEntity
+        {
+            CustomerType = "kundtyp"
+        });
+
+        if (customerTypeEntity != null && addressEntity != null)
+        {
+            var customerEntity = new CustomersEntity
+            {
+                AddressesId = addressEntity.Id,
+                CustomerTypeId = customerTypeEntity.Id
+            };
+            customerRepository.Create(customerEntity);
+
+
+
+            // Act
+            var existingCustomer = customerRepository.GetOne(x => x.Id == customerEntity.Id);
+            existingCustomer.Addresses.StreetName = "Nytt gatunamn";
+            var result = customerRepository.Update(existingCustomer);
+
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(existingCustomer.Addresses.StreetName, result.Addresses.StreetName);
+
+        }
+    }
+    [Fact]
+    public void Delete_ShouldDeleteOneCustomer_ReturnTrue()
+    {
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+        var customerTypeRepository = new CustomerTypeRepository(_context);
+        var addressRepository = new AddressesRepository(_context);
+
+        var addressEntity = addressRepository.Create(new AddressesEntity
+        {
+            StreetName = "Gatunamn",
+            PostalCode = "77777",
+            City = "Stad",
+        });
+
+        var customerTypeEntity = customerTypeRepository.Create(new CustomerTypeEntity
+        {
+            CustomerType = "kundtyp"
+        });
+
+        if (customerTypeEntity != null && addressEntity != null)
+        {
+            var customerEntity = new CustomersEntity
+            {
+                AddressesId = addressEntity.Id,
+                CustomerTypeId = customerTypeEntity.Id
+            };
+            customerRepository.Create(customerEntity);
+
+
+
+            // Act
+            var result = customerRepository.Delete(x => x.Id == customerEntity.Id);
+
+
+            // Assert
+            Assert.True(result);
+        }
+    }
+
+    [Fact]
+    public void Delete_ShouldNotDeleteOneCustomer_ReturnFalse()
+    {
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+        var customerTypeRepository = new CustomerTypeRepository(_context);
+        var addressRepository = new AddressesRepository(_context);
+
+        var addressEntity = addressRepository.Create(new AddressesEntity
+        {
+            StreetName = "Gatunamn",
+            PostalCode = "77777",
+            City = "Stad",
+        });
+
+        var customerTypeEntity = customerTypeRepository.Create(new CustomerTypeEntity
+        {
+            CustomerType = "kundtyp"
+        });
+
+        if (customerTypeEntity != null && addressEntity != null)
+        {
+            var customerEntity = new CustomersEntity
+            {
+                AddressesId = addressEntity.Id,
+                CustomerTypeId = customerTypeEntity.Id
+            };
+
+
+
+            // Act
+            var result = customerRepository.Delete(x => x.Id == customerEntity.Id);
+
+
+            // Assert
+            Assert.False(result);
+        }
+    }
+
+    [Fact]
+    public void Exists_ShouldReturnOneCustomer_ReturnTrue()
+    {
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+        var customerTypeRepository = new CustomerTypeRepository(_context);
+        var addressRepository = new AddressesRepository(_context);
+
+        var addressEntity = addressRepository.Create(new AddressesEntity
+        {
+            StreetName = "Gatunamn",
+            PostalCode = "77777",
+            City = "Stad",
+        });
+
+        var customerTypeEntity = customerTypeRepository.Create(new CustomerTypeEntity
+        {
+            CustomerType = "kundtyp"
+        });
+
+        if (customerTypeEntity != null && addressEntity != null)
+        {
+            var customerEntity = new CustomersEntity
+            {
+                AddressesId = addressEntity.Id,
+                CustomerTypeId = customerTypeEntity.Id
+            };
+            customerRepository.Create(customerEntity);
+
+
+            // Act
+            var result = customerRepository.Exists(x => x.Id == 1);
+
+
+            // Assert 
+            Assert.True(result);
+        }
+    }
+
+    [Fact]
+    public void Exists_ShouldNotReturnOneCustomer_ReturnFalse()
+    {
+        // Arrange
+        var customerRepository = new CustomersRepository(_context);
+
+
+        // Act
+        var result = customerRepository.Exists(x => x.Id == 1);
+
+
+        // Assert 
+        Assert.False(result);
+    }
 }
+
 
 
 

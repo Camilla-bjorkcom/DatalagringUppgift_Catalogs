@@ -25,7 +25,7 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
     {
         try
         {
-            var customerEmail = _contactInformationRepository.GetOne(x => x.Email == customerRegistrationDto.Email);
+            var customerEmail = _customersRepository.GetOne(x => x.ContactInformation.Email == customerRegistrationDto.Email);
             if (customerEmail == null)
             {
 
@@ -71,6 +71,8 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
                     return customerEntity;
                 }
             }
+            else
+                return null!;
 
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
