@@ -10,13 +10,14 @@ using System.Linq.Expressions;
 
 namespace Shared_Catalogs.Services;
 
-public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository)
+public class CustomerService(AddressesRepository addressesRepository, CustomerTypeRepository customerTypeRepository, CustomerProfileRepository customerProfileRepository, ContactInformationRepository contactInformationRepository, CustomersRepository customersRepository, CustomerPhoneNumbersRepository customerPhoneNumbersRepository)
 {
     private readonly AddressesRepository _addressesRepository = addressesRepository;
     private readonly CustomerTypeRepository _customerTypeRepository = customerTypeRepository;
     private readonly CustomerProfileRepository _customerProfileRepository = customerProfileRepository;
     private readonly ContactInformationRepository _contactInformationRepository = contactInformationRepository;
     private readonly CustomersRepository _customersRepository = customersRepository;
+    private readonly CustomerPhoneNumbersRepository _customerPhoneNumbersRepository = customerPhoneNumbersRepository;
 
 
     public UpdateCustomerDto CurrentCustomer { get; set; } = null!;
@@ -80,17 +81,18 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
 
     //GET
 
-    public CustomersEntity GetCustomerById(int id)
+    public ContactInformationEntity GetCustomerContactInformationById(int id)
     {
         try
         {
-            var customerEntity = _customersRepository.GetOne(x => x.Id == id);
+            var customerEntity = _contactInformationRepository.GetOne(x => x.CustomerId == id);
             return customerEntity;
         }
         catch (Exception ex) { Debug.WriteLine("ERROR: " + ex.Message); }
         return null!;
 
     }
+
 
     public CustomersEntity GetCustomerByEmail(string email)
     {
@@ -140,6 +142,32 @@ public class CustomerService(AddressesRepository addressesRepository, CustomerTy
         return null!;
     }
 
+
+    //UPDATE
+    public ContactInformationEntity UpdateCustomerProfileAndContactInformation(UpdateCustomerDto updateCustomerDto)
+    {
+        try
+        {
+            var exisitingCustomer = _contactInformationRepository.GetOne(x => x.Id == updateCustomerDto.Id);
+            if (exisitingCustomer != null)
+            {
+                if (updateCustomerDto.PhoneNumber != null)
+                {
+                    var customerPhoneNumberEntity = _customerPhoneNumbersRepository.Create(new CustomerPhoneNumbersEntity
+                    {
+                        PhoneNumber = updateCustomerDto.PhoneNumber,
+                        ContactId = exisitingCustomer.Id
+                    });
+                }
+
+                var updatedCustomerEntity = _contactInformationRepository.Update(exisitingCustomer);
+                return updatedCustomerEntity;
+            }
+
+        }
+        catch (Exception ex) { Debug.WriteLine("ERROR: " + ex.Message); }
+        return null!;
+    }
 
 
     //DELETE

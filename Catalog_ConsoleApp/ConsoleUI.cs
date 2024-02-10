@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Shared_Catalogs.Dtos;
+using Shared_Catalogs.Entities.Customers;
 using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Models;
 using Shared_Catalogs.Services;
@@ -114,15 +116,50 @@ public class ConsoleUI(CustomerService customerService, ProductService productSe
         Console.ReadKey();
     }
 
+    public void UpdateCustomerProfileAndContactInformation_UI()
+    {
+        UpdateCustomerDto updateCustomerDto = new UpdateCustomerDto();
+        Console.Clear();
+        Console.WriteLine("--------UPPDATERA KUND--------");
+        Console.Write("Skriv in kund-Id: ");
+        updateCustomerDto.Id = int.Parse(Console.ReadLine()!);
+
+        var customer = _customerService.GetCustomerContactInformationById(updateCustomerDto.Id);
+        if (customer != null)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Kund {customer.Id}, {customer.Email}");
+            Console.WriteLine();
+
+            Console.Write("Skriv in nytt telefonnummer: ");
+            updateCustomerDto.PhoneNumber = Console.ReadLine()!;
+     
+            _customerService.UpdateCustomerProfileAndContactInformation(updateCustomerDto);
+            Console.WriteLine();
+            Console.WriteLine($"Kund {customer.Id}, {customer.Email}");
+            foreach (var customerPhoneNumber in customer.PhoneNumbers)
+            {
+                Console.WriteLine($"{customerPhoneNumber.PhoneNumber}");
+            }
+            Console.WriteLine();
+        }
+
+        else
+        {
+            Console.WriteLine("Ingen kund hittades.");
+        }
+        Console.ReadKey();
+    }
+
 
     public void DeleteCustomer_UI()
     {
         Console.Clear();
         Console.WriteLine("--------RADERA KUND--------");
         Console.Write("Skriv in kund-id: ");
-        var id = int.Parse(Console.ReadLine()!);
+        var email = Console.ReadLine()!;
 
-        var customer = _customerService.GetCustomerById(id);
+        var customer = _customerService.GetCustomerByEmail(email);
         if (customer != null)
         {
             _customerService.DeleteCustomer(customer);

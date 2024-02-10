@@ -83,9 +83,6 @@ namespace Shared_Catalogs.Migrations
                     b.Property<int>("ContactInformationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("ContactId", "PhoneNumber");
 
                     b.HasIndex("ContactInformationId");
