@@ -120,7 +120,7 @@ public class CategoryRepository_Tests
     {
         // Arrange 
         var categoryRepository = new CategoryRepository(_context);
-       
+
         var categoryEntity = new Category
         {
             Id = 1,
@@ -133,7 +133,6 @@ public class CategoryRepository_Tests
 
         // Assert
         Assert.Null(result);
-
     }
 
 
@@ -225,7 +224,6 @@ public class CategoryRepository_Tests
 
         // Assert
         Assert.True(result);
-
     }
 
     [Fact]

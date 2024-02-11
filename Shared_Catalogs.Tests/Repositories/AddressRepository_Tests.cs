@@ -26,8 +26,6 @@ public class AddressRepository_Tests
             City = "Stad",
         };
 
-
-
         // Act
         var result = addressRepository.Create(addressEntity);
 
@@ -193,7 +191,6 @@ public class AddressRepository_Tests
 
         // Assert
         Assert.True(result);
-
     }
 
     [Fact]

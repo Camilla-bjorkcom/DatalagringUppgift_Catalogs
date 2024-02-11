@@ -86,15 +86,8 @@ public class CategoryService_Tests
     {
 
         //Arrange
-        var productRepository = new ProductRepository(_context);
         var categoryRepository = new CategoryRepository(_context);
         var categoryService = new CategoryService(categoryRepository);
-        var manufacturerRepository = new ManufacturerRepository(_context);
-        var productReviewsRepository = new ProductReviewsRepository(_context);
-        var productService = new ProductService(productRepository, productReviewsRepository, manufacturerRepository, categoryService);
-
-       
-      
 
         // Act
         var result = categoryService.CreateCategory("femtiobokstäverfemtiobokstäverfemtiobokstäverfemtiobokstäver");

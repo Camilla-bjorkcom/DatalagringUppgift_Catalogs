@@ -227,7 +227,6 @@ public class ProductReviewsRepository_Tests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(existingProductReview.Reviews, result.Reviews);
-
     }
 
 
@@ -251,7 +250,6 @@ public class ProductReviewsRepository_Tests
 
         // Assert
         Assert.True(result);
-
     }
 
     [Fact]
@@ -272,7 +270,6 @@ public class ProductReviewsRepository_Tests
 
         // Assert
         Assert.False(result);
-
     }
 
 
@@ -293,7 +290,6 @@ public class ProductReviewsRepository_Tests
 
         // Assert
         Assert.True(result);
-
     }
 
     [Fact]

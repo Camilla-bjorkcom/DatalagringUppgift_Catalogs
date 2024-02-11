@@ -47,8 +47,7 @@ public class ProductRepository_Tests
             ManufacturerId = manufacturerEntity.Id,
         };
 
-
-        // Act
+       // Act
         var result = productRepository.Create(productEntity);
 
 
@@ -131,8 +130,7 @@ public class ProductRepository_Tests
 
 
         // Assert
-        Assert.Null(result);
-        
+        Assert.Null(result);  
     }
 
     [Fact]
@@ -178,7 +176,6 @@ public class ProductRepository_Tests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(productEntity.Title, result.Title);
-
     }
 
     [Fact]
@@ -221,7 +218,6 @@ public class ProductRepository_Tests
 
         // Assert
         Assert.Null(result);
-
     }
 
 

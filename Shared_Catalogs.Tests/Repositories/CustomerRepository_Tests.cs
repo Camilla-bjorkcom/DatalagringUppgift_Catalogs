@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared_Catalogs.Contexts;
-using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
-using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Repositories;
 
 namespace Shared_Catalogs.Tests.Repositories;
@@ -19,10 +17,7 @@ public class CustomerRepository_Tests
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
-        var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -62,10 +57,7 @@ public class CustomerRepository_Tests
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
-        var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -104,10 +96,7 @@ public class CustomerRepository_Tests
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
-        var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
