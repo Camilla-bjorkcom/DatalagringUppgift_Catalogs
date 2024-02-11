@@ -44,7 +44,6 @@ public class ProductService_Tests
     }
 
 
-
     [Fact]
     public void CreateProductShouldNot_CreateNewProductIfTitleAlreadyExists_ReturnNull()
     {
@@ -78,8 +77,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.Null(result);
-
-        
     }
 
 
@@ -109,8 +106,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.NotNull(result);
-
-
     }
 
     [Fact]
@@ -139,8 +134,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.Null(result);
-
-
     }
 
     [Fact]
@@ -197,8 +190,7 @@ public class ProductService_Tests
         var result = productService.GetAllProducts();
 
         // Assert
-        Assert.Null(result);
-        
+        Assert.Null(result);   
     }
 
 
@@ -232,7 +224,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.NotNull(result);
-
     }
 
     [Fact]
@@ -265,7 +256,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.Null(result);
-
     }
 
     [Fact]
@@ -293,7 +283,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.True(result);
-
     }
 
 
@@ -320,7 +309,6 @@ public class ProductService_Tests
 
         // Assert
         Assert.False(result);
-
     }
 
 

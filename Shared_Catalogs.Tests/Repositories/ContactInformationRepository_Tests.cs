@@ -1,28 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared_Catalogs.Contexts;
-using Shared_Catalogs.Dtos;
 using Shared_Catalogs.Entities.Customers;
-using Shared_Catalogs.Entities.Products;
 using Shared_Catalogs.Repositories;
 
 namespace Shared_Catalogs.Tests.Repositories;
 
-public class CustomerRepository_Tests
+public class ContactInformationRepository_Tests
 {
     private readonly CustomerDbContext _context =
-      new(new DbContextOptionsBuilder<CustomerDbContext>()
-      .UseInMemoryDatabase($"{Guid.NewGuid()}")
-      .Options);
+     new(new DbContextOptionsBuilder<CustomerDbContext>()
+     .UseInMemoryDatabase($"{Guid.NewGuid()}")
+     .Options);
+
 
     [Fact]
-    public void CreateShould_AddOneTo_CustomerEntity_AndReturnEntity()
+    public void CreateShould_AddOneTo_ContactInformationEntity_AndReturnEntity()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
         var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -39,33 +36,37 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
+            });
+
+
+            var contactInformationEntity = new ContactInformationEntity
+            {
+                Id = 1,
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
             };
 
-
             // Act
-            var result = customerRepository.Create(customerEntity);
+            var result = contactInformationRepository.Create(contactInformationEntity);
 
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<CustomersEntity>(result);
+            Assert.IsType<ContactInformationEntity>(result);
         }
     }
 
-
     [Fact]
-    public void CreateShouldNot_AddOneTo_CustomerEntity_IfAlreadyExists_AndReturnNull()
+    public void CreateShouldNot_AddOneTo_ContactInformationEntity_IfAlreadyExists_AndReturnNull()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
         var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -82,32 +83,35 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
+
+
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
 
             // Act
-            var result = customerRepository.Create(customerEntity);
+            var result = contactInformationRepository.Create(contactInformationEntity);
 
 
             // Assert
             Assert.Null(result);
         }
-
     }
 
     [Fact]
-    public void GetAllShouldGetAllRecords_ReturnIEnumerableofTypeCustomer()
+    public void GetAllShouldGetAllRecords_ReturnIEnumerableofTypeContactInformation()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
         var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -124,20 +128,26 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
+
+
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
 
             // Act
-            var result = customerRepository.GetAll();
+            var result = contactInformationRepository.GetAll();
 
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<IEnumerable<CustomersEntity>>(result);
+            Assert.IsAssignableFrom<IEnumerable<ContactInformationEntity>>(result);
         }
     }
 
@@ -145,28 +155,25 @@ public class CustomerRepository_Tests
     public void GetAllShouldNotGetAllRecords_ReturnNull()
     {
         // Arrange
-        var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
 
 
         // Act
-        var result = customerRepository.GetAll();
+        var result = contactInformationRepository.GetAll();
 
 
         // Assert
         Assert.Null(result);
-
     }
 
 
     [Fact]
-    public void GetOne_ShouldGetOneCustomer_ReturnOneCustomer()
+    public void GetOne_ShouldGetOneContactInformation_ReturnOneContactInformation()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
         var contactInformationRepository = new ContactInformationRepository(_context);
-        var customerProfileRepository = new CustomerProfileRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
-        var customerPhoneNumberRepository = new CustomerPhoneNumbersRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
         var addressEntity = addressRepository.Create(new AddressesEntity
@@ -183,24 +190,28 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
+
+
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
 
 
             // Act
-            var result = customerRepository.GetOne(x => x.Id == customerEntity.Id);
+            var result = contactInformationRepository.GetOne(x => x.Id == contactInformationEntity.Id);
 
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(customerEntity.Id, result.Id);
-
+            Assert.Equal(contactInformationEntity.Id, result.Id);
         }
-
     }
 
 
@@ -209,6 +220,7 @@ public class CustomerRepository_Tests
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
@@ -226,14 +238,22 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
+            });
+
+
+            var contactInformationEntity = new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
             };
 
+
             // Act
-            var result = customerRepository.GetOne(x => x.Id == customerEntity.Id);
+            var result = contactInformationRepository.GetOne(x => x.Id == contactInformationEntity.Id);
 
 
             // Assert
@@ -247,9 +267,9 @@ public class CustomerRepository_Tests
     [Fact]
     public void Update_ShouldUpdateCustomer_ReturnUpdatedCustomer()
     {
-
         // Arrange
         var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
@@ -267,32 +287,38 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
 
+
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
 
 
             // Act
-            var existingCustomer = customerRepository.GetOne(x => x.Id == customerEntity.Id);
-            existingCustomer.Addresses.StreetName = "Nytt gatunamn";
-            var result = customerRepository.Update(existingCustomer);
+            var existingContactInformation = contactInformationRepository.GetOne(x => x.Id == contactInformationEntity.Id);
+            existingContactInformation.Email = "Ny Epost";
+            var result = contactInformationRepository.Update(existingContactInformation);
 
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(existingCustomer.Addresses.StreetName, result.Addresses.StreetName);
-
+            Assert.Equal(existingContactInformation.Email, result.Email);
         }
     }
+
     [Fact]
-    public void Delete_ShouldDeleteOneCustomer_ReturnTrue()
+    public void Delete_ShouldDeleteOneContactInformation_ReturnTrue()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
@@ -310,17 +336,21 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
 
 
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
 
             // Act
-            var result = customerRepository.Delete(x => x.Id == customerEntity.Id);
+            var result = contactInformationRepository.Delete(x => x.Id == contactInformationEntity.Id);
 
 
             // Assert
@@ -333,6 +363,7 @@ public class CustomerRepository_Tests
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
@@ -350,16 +381,21 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
+            });
+
+
+            var contactInformationEntity = new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
             };
 
-
-
             // Act
-            var result = customerRepository.Delete(x => x.Id == customerEntity.Id);
+            var result = contactInformationRepository.Delete(x => x.Id == contactInformationEntity.Id);
 
 
             // Assert
@@ -368,10 +404,11 @@ public class CustomerRepository_Tests
     }
 
     [Fact]
-    public void Exists_ShouldReturnOneCustomer_ReturnTrue()
+    public void Exists_ShouldReturnOneContactInformation_ReturnTrue()
     {
         // Arrange
         var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
         var customerTypeRepository = new CustomerTypeRepository(_context);
         var addressRepository = new AddressesRepository(_context);
 
@@ -389,16 +426,20 @@ public class CustomerRepository_Tests
 
         if (customerTypeEntity != null && addressEntity != null)
         {
-            var customerEntity = new CustomersEntity
+            var customerEntity = customerRepository.Create(new CustomersEntity
             {
                 AddressesId = addressEntity.Id,
                 CustomerTypeId = customerTypeEntity.Id
-            };
-            customerRepository.Create(customerEntity);
+            });
 
 
+            var contactInformationEntity = contactInformationRepository.Create(new ContactInformationEntity
+            {
+                Email = "Epost-address",
+                CustomerId = customerEntity.Id
+            });
             // Act
-            var result = customerRepository.Exists(x => x.Id == 1);
+            var result = contactInformationRepository.Exists(x => x.Id == 1);
 
 
             // Assert 
@@ -410,19 +451,14 @@ public class CustomerRepository_Tests
     public void Exists_ShouldNotReturnOneCustomer_ReturnFalse()
     {
         // Arrange
-        var customerRepository = new CustomersRepository(_context);
+        var contactInformationRepository = new ContactInformationRepository(_context);
 
 
         // Act
-        var result = customerRepository.Exists(x => x.Id == 1);
+        var result = contactInformationRepository.Exists(x => x.Id == 1);
 
 
         // Assert 
         Assert.False(result);
     }
 }
-
-
-
-
-

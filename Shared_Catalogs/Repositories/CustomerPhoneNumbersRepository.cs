@@ -10,5 +10,24 @@ namespace Shared_Catalogs.Repositories
     {
         private readonly CustomerDbContext _context = context;
 
+        public override CustomerPhoneNumbersEntity Update(CustomerPhoneNumbersEntity entity)
+        {
+            try
+            {
+                var entityToUpdate = _context.CustomerPhoneNumbers.Find(entity.PhoneNumber, entity.ContactInformationId);
+                if (entityToUpdate != null)
+                {
+                     entityToUpdate = entity;
+                    _context.CustomerPhoneNumbers.Update(entityToUpdate);
+                    _context.SaveChanges();
+
+                    return entityToUpdate;
+                }
+            }
+            catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+
+            return null!;
+        }
+
     }
 }

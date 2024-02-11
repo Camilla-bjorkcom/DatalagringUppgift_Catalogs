@@ -15,7 +15,7 @@ public class ProductRepository_Tests
         .Options);
 
     [Fact]
-    public void Create_Should_Add_One_To_ProductEntity_And_Return_Entity()
+    public void CreateShouldAddOne_ToProductEntity_ReturnEntity()
     {
         // Arrange
         var productRepository = new ProductRepository(_context);
@@ -57,7 +57,7 @@ public class ProductRepository_Tests
     }
 
     [Fact]
-    public void Create_Should_Not_Add_One_To_ProductEntity_And_Return_Null()
+    public void CreateShouldNotAddOne_ToProductEntity_ReturnNull()
     {
         // Arrange
         var productRepository = new ProductRepository(_context);
@@ -414,7 +414,7 @@ public class ProductRepository_Tests
 
 
         // Act
-        bool result = productRepository.Exists(x => x.ArticleNumber == $"{Guid.NewGuid}");
+        bool result = productRepository.Exists(x => x.ArticleNumber == $"{Guid.NewGuid()}");
 
 
         // Assert 

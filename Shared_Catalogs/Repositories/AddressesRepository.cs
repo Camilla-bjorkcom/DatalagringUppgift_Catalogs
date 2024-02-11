@@ -10,4 +10,23 @@ public class AddressesRepository(CustomerDbContext context) : Repo<AddressesEnti
 {
     private readonly CustomerDbContext _context = context;
 
+    public override AddressesEntity Update(AddressesEntity entity)
+    {
+        try
+        {
+            var entityToUpdate = _context.Addresses.Find(entity.Id);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate = entity;
+                _context.Addresses.Update(entityToUpdate);
+                _context.SaveChanges();
+
+                return entityToUpdate;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+
+        return null!;
+    }
 }
+

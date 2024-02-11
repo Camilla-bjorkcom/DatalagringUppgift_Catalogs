@@ -14,16 +14,23 @@ public class CategoryService(CategoryRepository categoryRepository)
     {
         try
         {
-            var categoryEntity = _categoryRepository.GetOne(x => x.CategoryName == categoryName);
-            if (categoryEntity == null)
+            if (categoryName == null || categoryName.Length > 50)
             {
-                categoryEntity = _categoryRepository.Create(new Category { CategoryName = categoryName });
-                if (categoryEntity != null)
-                {
-                    return categoryEntity;
-                }
+                return null!;
             }
-            else return categoryEntity;
+            else
+            {
+                var categoryEntity = _categoryRepository.GetOne(x => x.CategoryName == categoryName);
+                if (categoryEntity == null)
+                {
+                    categoryEntity = _categoryRepository.Create(new Category { CategoryName = categoryName });
+                    if (categoryEntity.CategoryName == categoryName)
+                    {
+                        return categoryEntity;
+                    }
+                }
+                else return categoryEntity;
+            }
         }
 
         catch (Exception ex) { Debug.WriteLine(ex.Message); }

@@ -10,4 +10,22 @@ public class CustomerProfileRepository(CustomerDbContext context) : Repo<Custome
 {
     private readonly CustomerDbContext _context = context;
 
+    public override CustomerProfilesEntity Update(CustomerProfilesEntity entity)
+    {
+        try
+        {
+            var entityToUpdate = _context.CustomerProfiles.Find(entity.Id);
+            if (entityToUpdate != null)
+            {
+                entityToUpdate = entity;
+                _context.CustomerProfiles.Update(entityToUpdate);
+                _context.SaveChanges();
+
+                return entityToUpdate;
+            }
+        }
+        catch (Exception ex) { Debug.WriteLine("Error :: " + ex.Message); }
+
+        return null!;
+    }
 }

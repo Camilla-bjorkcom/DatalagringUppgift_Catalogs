@@ -5,23 +5,29 @@ using System.Diagnostics;
 
 namespace Shared_Catalogs.Services;
 
-public class ProductReviewsService(ProductReviewsRepository productReviewsRepository)
+public class ProductReviewsService(ProductReviewsRepository productReviewsRepository, ProductRepository productRepository)
 {
     private readonly ProductReviewsRepository _productReviewsRepository = productReviewsRepository;
+    private readonly ProductRepository _productRepository = productRepository;
 
     public ProductReview CreateProductReview(ProductReviewsDto productReviews)
     {
         try
         {
-            var productReviewEntity = _productReviewsRepository.Create(new ProductReview
+            var exisitingProductArticleNumber = _productRepository.Exists(x => x.ArticleNumber == productReviews.ArticleNumber);
+            if (exisitingProductArticleNumber == true) 
             {
-                ArticleNumber = productReviews.ArticleNumber,
-                Reviews = productReviews.Reviews,
-            });
-            if (productReviewEntity != null)
-            {
-                return productReviewEntity;
+                var productReviewEntity = _productReviewsRepository.Create(new ProductReview
+                {
+                    ArticleNumber = productReviews.ArticleNumber,
+                    Reviews = productReviews.Reviews,
+                });
+                if (productReviewEntity != null)
+                {
+                    return productReviewEntity;
+                }
             }
+           
         }
         catch (Exception ex) { Debug.WriteLine(ex.Message); }
         return null!;
